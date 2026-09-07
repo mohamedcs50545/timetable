@@ -782,7 +782,7 @@ body {
 
 <script>
 // Official Semester Start Date: September 19, 2026
-const ACADEMIC_YEAR_START = new Date(2026, 8, 19); // 19/9/2026 (Month is 0-indexed: 8 = Sep)
+const ACADEMIC_YEAR_START = new Date(2026, 8, 19); // 19/9/2026
 
 // Campus Building Directory
 const ROOM_INFO = {
@@ -896,11 +896,9 @@ function parseMinutes(t) {
 function updateAcademicCalendarInfo() {
   const now = new Date();
   
-  // Format Date (e.g., "Tuesday, 8 September 2026")
   const options = { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' };
   document.getElementById("fullDateDisplay").textContent = now.toLocaleDateString('en-US', options);
 
-  // Compare with 19/9/2026
   const todayZero = new Date(now.getFullYear(), now.getMonth(), now.getDate());
   const startZero = new Date(ACADEMIC_YEAR_START.getFullYear(), ACADEMIC_YEAR_START.getMonth(), ACADEMIC_YEAR_START.getDate());
   const diffTime = todayZero - startZero;
@@ -917,16 +915,28 @@ function updateAcademicCalendarInfo() {
   }
 }
 
-// Live Status Engine
+// Live Status Engine (Checks whether semester has started)
 function updateLiveTracker() {
   const now = new Date();
-  const dayIndex = now.getDay();
-  const currentMinutes = now.getHours() * 60 + now.getMinutes();
-
   document.getElementById("liveClock").textContent = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 
   const dot = document.getElementById("liveDot");
   const text = document.getElementById("liveText");
+
+  // Check if semester has started
+  const todayZero = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  const startZero = new Date(ACADEMIC_YEAR_START.getFullYear(), ACADEMIC_YEAR_START.getMonth(), ACADEMIC_YEAR_START.getDate());
+  const diffDays = Math.round((startZero - todayZero) / (1000 * 60 * 60 * 24));
+
+  if (diffDays > 0) {
+    dot.className = "live-indicator idle";
+    text.innerHTML = `Summer Vacation · <strong>Semester starts in ${diffDays} day${diffDays > 1 ? 's' : ''} (19 Sep 2026)</strong>`;
+    return;
+  }
+
+  // If Semester has started:
+  const dayIndex = now.getDay();
+  const currentMinutes = now.getHours() * 60 + now.getMinutes();
 
   if (dayIndex === 5 || dayIndex === 6) {
     dot.className = "live-indicator idle";
@@ -1009,7 +1019,6 @@ function exportToCalendar() {
     icsLines.push("BEGIN:VEVENT");
     icsLines.push(`UID:cufe-me1-${activeGroup}-${idx}@eng.cu.edu.eg`);
     icsLines.push(`DTSTAMP:20260919T080000Z`);
-    // Anchored at first academic week (starting 20 Sep 2026 Sunday)
     const dayDate = 19 + dayOffsets[s.day];
     icsLines.push(`DTSTART;TZID=Africa/Cairo:202609${dayDate}T${sTime}`);
     icsLines.push(`DTEND;TZID=Africa/Cairo:202609${dayDate}T${eTime}`);
