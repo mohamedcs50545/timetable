@@ -18,6 +18,9 @@
   --text-muted: #64748b;
   --text-subtle: #94a3b8;
   
+  --primary: #2563eb;
+  --primary-light: #eff6ff;
+
   --c-gen: #d97706;
   --c-mth: #2563eb;
   --c-emc: #7c3aed;
@@ -87,10 +90,24 @@ body {
   letter-spacing: -0.03em;
   margin-top: 4px;
 }
-.term-meta {
+.date-academic-strip {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 6px;
   font-size: 13px;
   color: var(--text-muted);
-  margin-top: 2px;
+}
+.academic-week-badge {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 3px 9px;
+  border-radius: 9999px;
+  background: rgba(37, 99, 235, 0.1);
+  color: #2563eb;
+  border: 1px solid rgba(37, 99, 235, 0.25);
 }
 
 /* Actions Bar */
@@ -294,12 +311,20 @@ body {
   cursor: pointer;
   text-align: center;
   transition: all 0.15s ease;
+  position: relative;
 }
 .day-btn .day-name {
   display: block;
   font-size: 12px;
   font-weight: 600;
   color: var(--text-muted);
+}
+.day-btn .today-tag {
+  display: inline-block;
+  font-size: 9.5px;
+  font-weight: 700;
+  color: #2563eb;
+  margin-top: 2px;
 }
 .day-btn.active {
   background: var(--surface);
@@ -338,12 +363,26 @@ body {
   color: var(--text-main);
   display: flex;
   align-items: center;
+  justify-content: space-between;
 }
 .matrix-head.corner {
   justify-content: center;
   font-family: 'JetBrains Mono', monospace;
   font-size: 11px;
   color: var(--text-muted);
+}
+.matrix-head.is-today {
+  background: rgba(37, 99, 235, 0.08);
+  color: #2563eb;
+}
+.matrix-head .today-pill {
+  font-size: 9px;
+  font-weight: 800;
+  padding: 1px 5px;
+  border-radius: 4px;
+  background: #2563eb;
+  color: #fff;
+  letter-spacing: 0.04em;
 }
 .matrix-head.edge-right { border-right: none; }
 
@@ -591,7 +630,7 @@ body {
   color: var(--text-muted);
 }
 
-/* Legend with Clickable Highlight Filter */
+/* Legend */
 .legend {
   margin-top: 24px;
   background: var(--surface);
@@ -663,7 +702,13 @@ body {
       <div class="uni-title">Cairo University</div>
       <div class="faculty-title">Faculty of Engineering</div>
       <h1 class="dept-title">Mechanical Engineering</h1>
-      <div class="term-meta">Sophomore Level (ME-1) · Fall Semester Timetable</div>
+      
+      <!-- Date & Academic Week Indicator -->
+      <div class="date-academic-strip">
+        <span id="fullDateDisplay">Today's Date</span>
+        <span>•</span>
+        <span class="academic-week-badge" id="academicWeekBadge">Calculating Week...</span>
+      </div>
     </div>
 
     <!-- Actions Bar -->
@@ -736,7 +781,10 @@ body {
 </div>
 
 <script>
-// Campus Building Directory (Faculty of Engineering, Cairo University)
+// Official Semester Start Date: September 19, 2026
+const ACADEMIC_YEAR_START = new Date(2026, 8, 19); // 19/9/2026 (Month is 0-indexed: 8 = Sep)
+
+// Campus Building Directory
 const ROOM_INFO = {
   "3103-414": "Building 3 (Mechanical Dept.) — 1st Floor, Hall 3 (Capacity: 414)",
   "3101-306": "Building 3 (Mechanical Dept.) — 1st Floor, Hall 1 (Capacity: 306)",
@@ -833,12 +881,40 @@ const SESSIONS = [
 let activeView = "week";
 let activeGroup = "ME1-01";
 let highlightedCourse = null;
-const jsDay = new Date().getDay();
+
+const jsDateNow = new Date();
+const jsDay = jsDateNow.getDay();
 let activeDay = (jsDay >= 0 && jsDay <= 4) ? DAYS[jsDay].full : "Sunday";
+const todayDayName = (jsDay >= 0 && jsDay <= 4) ? DAYS[jsDay].full : null;
 
 function parseMinutes(t) {
   const [h, m] = t.split(":").map(Number);
   return h * 60 + m;
+}
+
+// Calculate Academic Week & Date Banner
+function updateAcademicCalendarInfo() {
+  const now = new Date();
+  
+  // Format Date (e.g., "Tuesday, 8 September 2026")
+  const options = { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' };
+  document.getElementById("fullDateDisplay").textContent = now.toLocaleDateString('en-US', options);
+
+  // Compare with 19/9/2026
+  const todayZero = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  const startZero = new Date(ACADEMIC_YEAR_START.getFullYear(), ACADEMIC_YEAR_START.getMonth(), ACADEMIC_YEAR_START.getDate());
+  const diffTime = todayZero - startZero;
+  const diffDays = Math.round(diffTime / (1000 * 60 * 60 * 24));
+
+  const badge = document.getElementById("academicWeekBadge");
+
+  if (diffDays < 0) {
+    const daysLeft = Math.abs(diffDays);
+    badge.textContent = `Starts in ${daysLeft} day${daysLeft > 1 ? 's' : ''} (19 Sep 2026)`;
+  } else {
+    const weekNum = Math.floor(diffDays / 7) + 1;
+    badge.textContent = `Academic Week ${weekNum}`;
+  }
 }
 
 // Live Status Engine
@@ -852,7 +928,6 @@ function updateLiveTracker() {
   const dot = document.getElementById("liveDot");
   const text = document.getElementById("liveText");
 
-  // If Friday (5) or Saturday (6)
   if (dayIndex === 5 || dayIndex === 6) {
     dot.className = "live-indicator idle";
     text.innerHTML = "Weekend · <strong>No classes scheduled today</strong>";
@@ -901,17 +976,16 @@ function updateLiveTracker() {
   }
 }
 
-// Interactive Room Guide Tooltip Alert
+// Room Guide
 function showRoomDetails(roomCode) {
   const info = ROOM_INFO[roomCode] || "Faculty of Engineering · Giza Campus";
   alert(`📍 Hall / Lab Location Details:\n\nRoom Code: ${roomCode}\n${info}`);
 }
 
-// iCalendar (.ics) Generator
+// iCalendar Export (.ics)
 function exportToCalendar() {
   const activeSessions = SESSIONS.filter(s => s.group === "ALL" || s.group === activeGroup);
   
-  // Weekly recurrent .ics template
   let icsLines = [
     "BEGIN:VCALENDAR",
     "VERSION:2.0",
@@ -922,16 +996,8 @@ function exportToCalendar() {
     "X-WR-TIMEZONE:Africa/Cairo"
   ];
 
-  // Base day map to standard 2-letter RRULE days
-  const rruleDays = {
-    "Sunday": "SU",
-    "Monday": "MO",
-    "Tuesday": "TU",
-    "Wednesday": "WE",
-    "Thursday": "TH"
-  };
-
-  const dayOffsets = { "Sunday": 0, "Monday": 1, "Tuesday": 2, "Wednesday": 3, "Thursday": 4 };
+  const rruleDays = { "Sunday": "SU", "Monday": "MO", "Tuesday": "TU", "Wednesday": "WE", "Thursday": "TH" };
+  const dayOffsets = { "Sunday": 1, "Monday": 2, "Tuesday": 3, "Wednesday": 4, "Thursday": 5 };
 
   activeSessions.forEach((s, idx) => {
     const course = COURSES[s.code] || { name: s.code };
@@ -942,11 +1008,11 @@ function exportToCalendar() {
 
     icsLines.push("BEGIN:VEVENT");
     icsLines.push(`UID:cufe-me1-${activeGroup}-${idx}@eng.cu.edu.eg`);
-    icsLines.push(`DTSTAMP:20260901T080000Z`);
-    // Example anchor start date
-    const dVal = 20 + dayOffsets[s.day];
-    icsLines.push(`DTSTART;TZID=Africa/Cairo:202609${dVal}T${sTime}`);
-    icsLines.push(`DTEND;TZID=Africa/Cairo:202609${dVal}T${eTime}`);
+    icsLines.push(`DTSTAMP:20260919T080000Z`);
+    // Anchored at first academic week (starting 20 Sep 2026 Sunday)
+    const dayDate = 19 + dayOffsets[s.day];
+    icsLines.push(`DTSTART;TZID=Africa/Cairo:202609${dayDate}T${sTime}`);
+    icsLines.push(`DTEND;TZID=Africa/Cairo:202609${dayDate}T${eTime}`);
     icsLines.push(`RRULE:FREQ=WEEKLY;BYDAY=${byDay}`);
     icsLines.push(`SUMMARY:${s.code} - ${s.type}`);
     icsLines.push(`DESCRIPTION:${course.name} (${s.group === 'ALL' ? 'All Sections' : s.group})`);
@@ -987,11 +1053,15 @@ function renderWeekMatrix() {
   grid.appendChild(corner);
 
   DAYS.forEach((d, i) => {
+    const isToday = (d.full === todayDayName);
     const head = document.createElement("div");
-    head.className = "matrix-head" + (i === DAYS.length - 1 ? " edge-right" : "");
+    head.className = "matrix-head" + (i === DAYS.length - 1 ? " edge-right" : "") + (isToday ? " is-today" : "");
     head.style.gridColumn = `${i + 2}`;
     head.style.gridRow = "1";
-    head.textContent = d.full;
+    head.innerHTML = `
+      <span>${d.full}</span>
+      ${isToday ? '<span class="today-pill">TODAY</span>' : ''}
+    `;
     grid.appendChild(head);
   });
 
@@ -1138,14 +1208,18 @@ function renderDaysBar() {
     return;
   }
   bar.style.display = "grid";
-  bar.innerHTML = DAYS.map(d => `
-    <button class="day-btn ${d.full === activeDay ? 'active' : ''}" onclick="selectDay('${d.full}')">
-      <span class="day-name">${d.short}</span>
-    </button>
-  `).join("");
+  bar.innerHTML = DAYS.map(d => {
+    const isToday = (d.full === todayDayName);
+    return `
+      <button class="day-btn ${d.full === activeDay ? 'active' : ''}" onclick="selectDay('${d.full}')">
+        <span class="day-name">${d.short}</span>
+        ${isToday ? '<span class="today-tag">TODAY</span>' : ''}
+      </button>
+    `;
+  }).join("");
 }
 
-// Legend with Toggle Filter
+// Legend
 function renderLegend() {
   const legend = document.getElementById("legend");
   legend.innerHTML = `
@@ -1177,6 +1251,7 @@ function render() {
     renderDailyAgenda();
   }
   updateLiveTracker();
+  updateAcademicCalendarInfo();
 }
 
 function setView(mode) {
@@ -1227,11 +1302,11 @@ document.getElementById("printBtn").addEventListener("click", () => {
 
 document.getElementById("calendarBtn").addEventListener("click", exportToCalendar);
 
-// Initial setup
+// Initial Execution
 initTheme();
 renderLegend();
 render();
-setInterval(updateLiveTracker, 60000); // Live status update every minute
+setInterval(updateLiveTracker, 60000);
 </script>
 </body>
 </html>
