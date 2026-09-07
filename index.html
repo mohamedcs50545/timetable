@@ -3,413 +3,415 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>CUFE · Mechanical Engineering-1</title>
+<title>CUFE · Mechanical Engineering-1 — Engineering Blueprint</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500;600;700&family=Geist:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
 <style>
 :root {
-  --bg-app: #080b11;
-  --bg-surface: #0f1523;
-  --bg-card: #141c2e;
-  --border: #1e293b;
-  --border-focus: #334155;
+  --blueprint-bg: #071322;
+  --grid-line: rgba(0, 195, 255, 0.08);
+  --grid-major: rgba(0, 195, 255, 0.16);
+  --cyan-bright: #00d2ff;
+  --cyan-dim: #008cb0;
+  --paper-border: #14355a;
   
-  --text-primary: #f8fafc;
-  --text-secondary: #94a3b8;
-  --text-tertiary: #475569;
-
-  --accent-gen: #f59e0b;
-  --accent-mth: #38bdf8;
-  --accent-emc: #a855f7;
-  --accent-mdp1: #06b6d4;
-  --accent-mdp2: #10b981;
-  --accent-epe: #f43f5e;
+  --c-gen: #ffb703;
+  --c-mth: #00e5ff;
+  --c-emc: #bd00ff;
+  --c-mdp1: #00b4d8;
+  --c-mdp2: #06d6a0;
+  --c-epe: #ef476f;
 }
 
 *{box-sizing:border-box;margin:0;padding:0;}
 
 body {
-  background-color: var(--bg-app);
-  color: var(--text-primary);
-  font-family: 'Geist', -apple-system, sans-serif;
+  background-color: var(--blueprint-bg);
+  color: #d6e8fa;
+  font-family: 'Chakra Petch', sans-serif;
   min-height: 100vh;
-  padding: 36px 20px 80px;
+  padding: 28px 20px 80px;
+  background-image: 
+    linear-gradient(var(--grid-major) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-major) 1px, transparent 1px),
+    linear-gradient(var(--grid-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+  background-size: 100px 100px, 100px 100px, 20px 20px, 20px 20px;
   -webkit-font-smoothing: antialiased;
 }
 
-.container {
-  max-width: 1240px;
+.blueprint-frame {
+  max-width: 1260px;
   margin: 0 auto;
+  border: 2px solid var(--paper-border);
+  box-shadow: 0 0 30px rgba(0, 210, 255, 0.07);
+  background: rgba(7, 19, 34, 0.94);
+  position: relative;
+  padding: 24px;
 }
 
-/* Header */
-.header {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
-  flex-wrap: wrap;
-  gap: 20px;
-  padding-bottom: 24px;
-  border-bottom: 1px solid var(--border);
-  margin-bottom: 24px;
+/* Corner Crosshairs for CAD aesthetic */
+.blueprint-frame::before, .blueprint-frame::after {
+  position: absolute;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 14px;
+  color: var(--cyan-dim);
+}
+.blueprint-frame::before { content: "+ [COORD: 00,00]"; top: 6px; left: 8px; }
+.blueprint-frame::after { content: "+ [CAD/CAM DEPT]"; top: 6px; right: 8px; }
+
+/* Engineering Title Block (الخرطوشة) */
+.title-block {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  border: 2px solid var(--cyan-dim);
+  margin-top: 14px;
+  margin-bottom: 22px;
+  background: rgba(0, 40, 75, 0.25);
 }
 
-.brand-kicker {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  font-family: 'Geist Mono', monospace;
+.title-main {
+  padding: 18px 22px;
+  border-right: 2px solid var(--cyan-dim);
+}
+.dept-tag {
+  font-family: 'Share Tech Mono', monospace;
   font-size: 11px;
-  letter-spacing: 0.08em;
+  color: var(--cyan-bright);
+  letter-spacing: 0.15em;
   text-transform: uppercase;
-  color: #38bdf8;
-  margin-bottom: 8px;
 }
-.brand-kicker .indicator {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: #38bdf8;
-  box-shadow: 0 0 10px #38bdf8;
-}
-
-.header h1 {
+.title-main h1 {
   font-size: 26px;
   font-weight: 700;
-  letter-spacing: -0.03em;
-  color: var(--text-primary);
+  letter-spacing: 0.03em;
+  color: #ffffff;
+  text-transform: uppercase;
+  margin-top: 4px;
 }
-
-.header p {
-  color: var(--text-secondary);
-  font-size: 13.5px;
+.title-main p {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 12px;
+  color: #7ba1c7;
   margin-top: 4px;
 }
 
-.specs-strip {
-  display: flex;
-  gap: 12px;
-  background: var(--bg-surface);
-  border: 1px solid var(--border);
-  padding: 8px 14px;
-  border-radius: 8px;
+.meta-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 110px);
+  grid-template-rows: 1fr 1fr;
+  font-family: 'Share Tech Mono', monospace;
 }
-.spec-block {
-  font-family: 'Geist Mono', monospace;
-  font-size: 11px;
-  color: var(--text-secondary);
+.meta-cell {
+  border-bottom: 1px solid var(--paper-border);
+  border-right: 1px solid var(--paper-border);
+  padding: 6px 10px;
+  font-size: 10px;
+  color: #5d84ab;
 }
-.spec-block span {
+.meta-cell:nth-child(3), .meta-cell:nth-child(6) {border-right: none;}
+.meta-cell:nth-child(4), .meta-cell:nth-child(5), .meta-cell:nth-child(6) {border-bottom: none;}
+.meta-cell strong {
   display: block;
   font-size: 12px;
-  font-weight: 600;
-  color: var(--text-primary);
+  color: #fff;
   margin-top: 2px;
 }
 
-/* Tabs */
-.tabs-bar {
+/* Section Selectors */
+.controls-bar {
   display: flex;
-  background: var(--bg-surface);
-  border: 1px solid var(--border);
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+.tabs-label {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 12px;
+  color: var(--cyan-bright);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.tabs-row {
+  display: flex;
+  gap: 6px;
+  background: rgba(14, 38, 66, 0.6);
+  border: 1px solid var(--paper-border);
   padding: 4px;
-  border-radius: 8px;
-  width: fit-content;
-  gap: 4px;
-  margin-bottom: 20px;
 }
 .tab-btn {
-  border: none;
+  border: 1px solid transparent;
   background: transparent;
-  padding: 7px 16px;
-  font-family: 'Geist Mono', monospace;
+  color: #7ba1c7;
+  padding: 6px 16px;
+  font-family: 'Share Tech Mono', monospace;
   font-size: 12px;
-  font-weight: 500;
-  color: var(--text-secondary);
-  border-radius: 6px;
   cursor: pointer;
   transition: all 0.15s ease;
 }
 .tab-btn:hover {
-  color: var(--text-primary);
-  background: rgba(255, 255, 255, 0.03);
+  color: #fff;
+  border-color: var(--cyan-dim);
 }
 .tab-btn.active {
-  background: #1e293b;
-  color: #fff;
-  font-weight: 600;
-  box-shadow: inset 0 0 0 1px rgba(255,255,255,0.08);
+  background: var(--cyan-bright);
+  color: #04101e;
+  font-weight: 700;
+  box-shadow: 0 0 12px rgba(0, 210, 255, 0.4);
 }
 
-/* Grid Wrapper */
-.grid-container {
-  background: var(--bg-surface);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  overflow: hidden;
-}
-.grid-scroll {
+/* Drawing Board Grid */
+.sheet-scroll {
   overflow-x: auto;
+  border: 2px solid var(--paper-border);
+  background: #06111f;
 }
-
 .grid {
   display: grid;
-  grid-template-columns: 100px repeat(5, minmax(190px, 1fr));
-  grid-template-rows: 44px repeat(8, minmax(80px, auto));
-  min-width: 1000px;
+  grid-template-columns: 105px repeat(5, minmax(200px, 1fr));
+  grid-template-rows: 40px repeat(8, minmax(78px, auto));
+  min-width: 1050px;
 }
 
-/* Headers */
-.cell-header {
-  background: #0d121c;
-  border-bottom: 1px solid var(--border);
-  border-right: 1px solid var(--border);
-  padding: 10px 14px;
-  font-family: 'Geist Mono', monospace;
-  font-size: 12px;
-  font-weight: 600;
-  color: var(--text-secondary);
+.cell-head {
+  background: #091a2e;
+  border-bottom: 2px solid var(--paper-border);
+  border-right: 1px solid var(--paper-border);
+  padding: 8px 12px;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--cyan-bright);
   display: flex;
   align-items: center;
-  letter-spacing: 0.02em;
+  letter-spacing: 0.05em;
 }
-.cell-header.corner {
-  color: var(--text-tertiary);
-  font-size: 10.5px;
+.cell-head.corner {
   justify-content: center;
-  background: #090d14;
+  background: #050e1a;
+  color: #486e96;
 }
-.cell-header.edge-right {border-right: none;}
+.cell-head.edge-right {border-right: none;}
 
-/* Time slots column */
-.cell-time {
-  background: #0c1018;
-  border-bottom: 1px solid var(--border);
-  border-right: 1px solid var(--border);
+.time-axis {
+  background: #081628;
+  border-bottom: 1px solid var(--paper-border);
+  border-right: 2px solid var(--paper-border);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: 'Geist Mono', monospace;
-  font-size: 11.5px;
-  font-weight: 500;
-  color: var(--text-secondary);
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 11px;
+  color: #628bb5;
+  letter-spacing: -0.02em;
 }
 
-/* Grid Cell */
 .cell {
-  border-bottom: 1px solid var(--border);
-  border-right: 1px solid var(--border);
-  padding: 6px;
+  border-bottom: 1px solid var(--paper-border);
+  border-right: 1px solid var(--paper-border);
+  padding: 5px;
   display: flex;
   flex-direction: column;
+  position: relative;
 }
 .cell.edge-right {border-right: none;}
 
-/* Class Cards */
+/* Technical Blueprint Blocks */
 .slot-card {
   height: 100%;
-  border-radius: 6px;
-  padding: 9px 11px;
+  padding: 8px 10px;
   display: flex;
   flex-direction: column;
-  background: var(--bg-card);
-  border: 1px solid rgba(255, 255, 255, 0.05);
-  border-left: 3px solid var(--accent);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
-  transition: border-color 0.15s ease, background-color 0.15s ease;
+  background: rgba(9, 29, 52, 0.85);
+  border: 1px solid var(--color);
+  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
+  position: relative;
 }
-.slot-card:hover {
-  background: #172136;
-  border-color: rgba(255, 255, 255, 0.12);
+.slot-card::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0;
+  width: 4px; height: 100%;
+  background: var(--color);
 }
 
-.card-header {
+.card-top {
   display: flex;
-  align-items: center;
   justify-content: space-between;
+  align-items: center;
   gap: 6px;
 }
 .card-code {
-  font-family: 'Geist Mono', monospace;
-  font-weight: 700;
+  font-family: 'Share Tech Mono', monospace;
   font-size: 13px;
-  color: #f1f5f9;
-}
-.tags-row {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-}
-.badge-type {
-  font-family: 'Geist Mono', monospace;
-  font-size: 9.5px;
   font-weight: 700;
-  padding: 2px 5px;
-  border-radius: 3px;
   color: #fff;
-  background: var(--accent);
+  letter-spacing: 0.05em;
 }
-.badge-shared {
-  font-family: 'Geist Mono', monospace;
+.card-tags {
+  display: flex;
+  gap: 4px;
+}
+.tag {
+  font-family: 'Share Tech Mono', monospace;
   font-size: 9px;
+  padding: 1px 4px;
+  border: 1px solid var(--color);
+  color: var(--color);
   font-weight: 700;
-  padding: 1px 5px;
-  border-radius: 3px;
-  background: rgba(245, 158, 11, 0.15);
-  color: #fbbf24;
-  border: 1px solid rgba(245, 158, 11, 0.3);
+}
+.tag.all {
+  background: rgba(255, 183, 3, 0.15);
+  border-color: #ffb703;
+  color: #ffb703;
 }
 
-.card-title {
+.card-name {
   font-size: 11.5px;
-  font-weight: 500;
-  color: #cbd5e1;
+  color: #a4c4e4;
   margin-top: 4px;
-  line-height: 1.35;
+  line-height: 1.25;
+  font-weight: 500;
 }
 
-.card-bottom {
+.card-footer {
   margin-top: auto;
-  padding-top: 8px;
+  padding-top: 6px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-family: 'Geist Mono', monospace;
-  font-size: 10.5px;
-  border-top: 1px solid rgba(255, 255, 255, 0.04);
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 10px;
+  border-top: 1px dashed rgba(20, 53, 90, 0.8);
 }
-.card-timing {
-  color: var(--text-secondary);
-  font-weight: 500;
+.card-time {
+  color: #00d2ff;
 }
 .card-room {
-  background: rgba(255, 255, 255, 0.04);
-  padding: 2px 6px;
-  border-radius: 4px;
-  color: #94a3b8;
-  border: 1px solid rgba(255, 255, 255, 0.04);
+  color: #fff;
+  background: rgba(0, 0, 0, 0.35);
+  padding: 1px 5px;
+  border: 1px solid var(--paper-border);
 }
 
-/* Empty Cell */
+/* Empty Slots */
 .slot-empty {
   height: 100%;
-  border-radius: 6px;
-  background: rgba(15, 23, 42, 0.3);
-  border: 1px dashed rgba(255, 255, 255, 0.05);
+  background: rgba(4, 13, 23, 0.4);
+  border: 1px dashed rgba(20, 53, 90, 0.4);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: 'Geist Mono', monospace;
-  font-size: 10.5px;
-  font-weight: 500;
-  color: #334155;
-  letter-spacing: 0.06em;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 10px;
+  color: #27476c;
+  letter-spacing: 0.1em;
 }
 
-/* Legend */
+/* Technical Specs Legend */
 .legend-strip {
   margin-top: 20px;
-  background: var(--bg-surface);
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  padding: 12px 18px;
+  border: 1px solid var(--paper-border);
+  background: rgba(6, 17, 31, 0.8);
+  padding: 12px 16px;
   display: flex;
   flex-wrap: wrap;
   gap: 12px 24px;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 11.5px;
 }
-.legend-entry {
+.legend-item {
   display: flex;
   align-items: center;
   gap: 8px;
-  font-size: 12px;
-  color: var(--text-secondary);
 }
-.legend-dot {
+.legend-box {
   width: 8px;
   height: 8px;
-  border-radius: 2px;
+  border: 1px solid var(--c);
+  background: var(--c);
 }
-.legend-entry b {
-  font-family: 'Geist Mono', monospace;
-  color: var(--text-primary);
-  font-weight: 600;
+.legend-item b {
+  color: #fff;
 }
 
-@media(max-width: 768px) {
-  .header {flex-direction: column; align-items: flex-start;}
-  .specs-strip {width: 100%; justify-content: space-between;}
+@media(max-width: 840px) {
+  .title-block {grid-template-columns: 1fr;}
+  .title-main {border-right: none; border-bottom: 2px solid var(--cyan-dim);}
+  .meta-grid {grid-template-columns: repeat(3, 1fr);}
 }
 </style>
 </head>
 <body>
 
-<div class="container">
-  
-  <header class="header">
-    <div>
-      <div class="brand-kicker">
-        <span class="indicator"></span> Cairo University · Engineering
-      </div>
-      <h1>Mechanical Engineering — 1</h1>
-      <p>Sophomore Fall Semester Schedule</p>
-    </div>
+<div class="blueprint-frame">
 
-    <div class="specs-strip">
-      <div class="spec-block">
-        SECTIONS
-        <span>ME1-01 → 04</span>
-      </div>
-      <div class="spec-block">
-        PERIOD
-        <span>Sun – Thu</span>
-      </div>
-      <div class="spec-block">
-        HOURS
-        <span>08:00 – 15:50</span>
-      </div>
+  <!-- CAD Drawing Title Block -->
+  <header class="title-block">
+    <div class="title-main">
+      <div class="dept-tag">FACULTY OF ENGINEERING · CAIRO UNIVERSITY</div>
+      <h1>DEPARTMENT OF MECHANICAL ENGINEERING</h1>
+      <p>TIMETABLE SPECIFICATION · SOPHOMORE LEVEL (ME-1) · FALL</p>
+    </div>
+    <div class="meta-grid">
+      <div class="meta-cell">DWG NO.<strong>CUFE-ME-01</strong></div>
+      <div class="meta-cell">SCALE<strong>1:1 FULL</strong></div>
+      <div class="meta-cell">SECTIONS<strong>01 — 04</strong></div>
+      <div class="meta-cell">STATUS<strong>APPROVED</strong></div>
+      <div class="meta-cell">PROJECTION<strong>3RD ANGLE</strong></div>
+      <div class="meta-cell">UNITS<strong>HRS:MIN</strong></div>
     </div>
   </header>
 
-  <div class="tabs-bar" id="tabs"></div>
-
-  <div class="grid-container">
-    <div class="grid-scroll">
-      <div class="grid" id="grid"></div>
+  <!-- Controls -->
+  <div class="controls-bar">
+    <div class="tabs-label">
+      <span>&#9654; SECTION ACTIVE VIEW:</span>
     </div>
+    <div class="tabs-row" id="tabs"></div>
   </div>
 
+  <!-- Drawing Sheet -->
+  <div class="sheet-scroll">
+    <div class="grid" id="grid"></div>
+  </div>
+
+  <!-- Legend -->
   <div class="legend-strip" id="legend"></div>
 
 </div>
 
 <script>
 const COURSES = {
-  "GEN G119": { name: "Entrepreneurship & Innovation", color: "var(--accent-gen)" },
-  "MTH G102": { name: "Linear Algebra & Multivariable Integrals", color: "var(--accent-mth)" },
-  "EMC G101": { name: "Dynamics of Rigid Bodies", color: "var(--accent-emc)" },
-  "MDP G111": { name: "Computer-Aided Mechanical Drafting", color: "var(--accent-mdp1)" },
-  "MDP G121": { name: "Materials Science", color: "var(--accent-mdp2)" },
-  "EPE G113": { name: "Electrical & Electronics Engineering", color: "var(--accent-epe)" },
+  "GEN G119": { name: "Entrepreneurship & Innovation", color: "var(--c-gen)" },
+  "MTH G102": { name: "Linear Algebra & Multivariable Integrals", color: "var(--c-mth)" },
+  "EMC G101": { name: "Dynamics of Rigid Bodies", color: "var(--c-emc)" },
+  "MDP G111": { name: "Computer-Aided Mechanical Drafting", color: "var(--c-mdp1)" },
+  "MDP G121": { name: "Materials Science", color: "var(--c-mdp2)" },
+  "EPE G113": { name: "Electrical & Electronics Engineering", color: "var(--c-epe)" },
 };
 
 const DAYS = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday"];
 const SLOTS = [
-  "08:00 - 08:50",
-  "09:00 - 09:50",
-  "10:00 - 10:50",
-  "11:00 - 11:50",
-  "12:00 - 12:50",
-  "01:00 - 01:50",
-  "02:00 - 02:50",
-  "03:00 - 03:50",
+  "08:00-08:50",
+  "09:00-09:50",
+  "10:00-10:50",
+  "11:00-11:50",
+  "12:00-12:50",
+  "13:00-13:50",
+  "14:00-14:50",
+  "15:00-15:50",
 ];
 
-const TIME_STARTS = ["08:00", "09:00", "10:00", "11:00", "12:00", "01:00", "02:00", "03:00"];
-const TIME_ENDS   = ["08:50", "09:50", "10:50", "11:50", "12:50", "01:50", "02:50", "03:50"];
+const TIME_STARTS = ["08:00", "09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00"];
+const TIME_ENDS   = ["08:50", "09:50", "10:50", "11:50", "12:50", "13:50", "14:50", "15:50"];
 
 function formatTime(start, span) {
-  return `${TIME_STARTS[start]} – ${TIME_ENDS[start + span - 1]}`;
+  return `${TIME_STARTS[start]} - ${TIME_ENDS[start + span - 1]}`;
 }
 
 const SESSIONS = [
@@ -454,44 +456,44 @@ function courseInfo(raw){
   const parts = raw.split(',');
   const code = parts[0].trim();
   const type = (parts[1] || '').trim().replace('.', '');
-  const meta = COURSES[code] || { name: code, color: 'var(--accent-mth)' };
+  const meta = COURSES[code] || { name: code, color: 'var(--c-mth)' };
   return { code, type, name: meta.name, color: meta.color };
 }
 
 function cardHTML(sess, extraLabel){
   const info = courseInfo(sess.course);
   const isShared = sess.group === 'ALL';
-  const displayTitle = extraLabel ? `${extraLabel} · ${info.name}` : info.name;
+  const displayTitle = extraLabel ? `[${extraLabel}] ${info.name}` : info.name;
   const timeStr = formatTime(sess.start, sess.span);
 
   return `
-    <div class="slot-card" style="--accent: ${info.color}">
-      <div class="card-header">
+    <div class="slot-card" style="--color: ${info.color}">
+      <div class="card-top">
         <span class="card-code">${info.code}</span>
-        <div class="tags-row">
-          ${isShared ? '<span class="badge-shared">ALL</span>' : ''}
-          <span class="badge-type">${info.type}</span>
+        <div class="card-tags">
+          ${isShared ? '<span class="tag all">ALL</span>' : ''}
+          <span class="tag">${info.type}</span>
         </div>
       </div>
-      <div class="card-title">${displayTitle}</div>
-      <div class="card-bottom">
-        <span class="card-timing">${timeStr}</span>
-        <span class="card-room">${sess.room}</span>
+      <div class="card-name">${displayTitle}</div>
+      <div class="card-footer">
+        <span class="card-time">${timeStr}</span>
+        <span class="card-room">RM ${sess.room}</span>
       </div>
     </div>`;
 }
 
 function renderHeader(grid){
   const corner = document.createElement('div');
-  corner.className = 'cell-header corner';
-  corner.textContent = 'SLOT';
+  corner.className = 'cell-head corner';
+  corner.textContent = 'SEC//TIME';
   corner.style.gridColumn = '1';
   corner.style.gridRow = '1';
   grid.appendChild(corner);
 
   DAYS.forEach((d, i) => {
     const c = document.createElement('div');
-    c.className = 'cell-header' + (i === DAYS.length - 1 ? ' edge-right' : '');
+    c.className = 'cell-head' + (i === DAYS.length - 1 ? ' edge-right' : '');
     c.style.gridColumn = `${i + 2}`;
     c.style.gridRow = '1';
     c.textContent = d.toUpperCase();
@@ -506,7 +508,7 @@ function renderGrid(group){
 
   SLOTS.forEach((slot, s) => {
     const timeCell = document.createElement('div');
-    timeCell.className = 'cell-time';
+    timeCell.className = 'time-axis';
     timeCell.style.gridColumn = '1';
     timeCell.style.gridRow = `${s + 2}`;
     timeCell.textContent = slot;
@@ -528,7 +530,7 @@ function renderGrid(group){
         freeCell.className = 'cell' + (isLastCol ? ' edge-right' : '');
         freeCell.style.gridColumn = `${col}`;
         freeCell.style.gridRow = `${currentSlot + 2} / span ${freeSpan}`;
-        freeCell.innerHTML = '<div class="slot-empty">FREE</div>';
+        freeCell.innerHTML = '<div class="slot-empty">// IDLE</div>';
         grid.appendChild(freeCell);
       }
 
@@ -548,7 +550,7 @@ function renderGrid(group){
       freeCell.className = 'cell' + (isLastCol ? ' edge-right' : '');
       freeCell.style.gridColumn = `${col}`;
       freeCell.style.gridRow = `${currentSlot + 2} / span ${freeSpan}`;
-      freeCell.innerHTML = '<div class="slot-empty">FREE</div>';
+      freeCell.innerHTML = '<div class="slot-empty">// IDLE</div>';
       grid.appendChild(freeCell);
     }
   });
@@ -561,7 +563,7 @@ function renderAllGroupsGrid(){
 
   SLOTS.forEach((slot, s) => {
     const timeCell = document.createElement('div');
-    timeCell.className = 'cell-time';
+    timeCell.className = 'time-axis';
     timeCell.style.gridColumn = '1';
     timeCell.style.gridRow = `${s + 2}`;
     timeCell.textContent = slot;
@@ -595,9 +597,9 @@ function renderAllGroupsGrid(){
       cell.style.gridRow = `${s + 2}`;
 
       if (slotSess.length === 0) {
-        cell.innerHTML = '<div class="slot-empty">FREE</div>';
+        cell.innerHTML = '<div class="slot-empty">// IDLE</div>';
       } else {
-        cell.innerHTML = slotSess.map(sess => cardHTML(sess, sess.group)).join('<div style="height:6px"></div>');
+        cell.innerHTML = slotSess.map(sess => cardHTML(sess, sess.group)).join('<div style="height:4px"></div>');
       }
       grid.appendChild(cell);
       s++;
@@ -608,9 +610,9 @@ function renderAllGroupsGrid(){
 function renderLegend(){
   const legendWrap = document.getElementById('legend');
   legendWrap.innerHTML = Object.entries(COURSES).map(([code, data]) => `
-    <div class="legend-entry">
-      <span class="legend-dot" style="background:${data.color}"></span>
-      <b>${code}</b> ${data.name}
+    <div class="legend-item">
+      <span class="legend-box" style="--c: ${data.color}"></span>
+      <b>${code}</b> [${data.name}]
     </div>
   `).join('');
 }
@@ -619,11 +621,11 @@ function init(){
   const tabsWrap = document.getElementById('tabs');
   const groups = ['ALL', 'ME1-01', 'ME1-02', 'ME1-03', 'ME1-04'];
   const labels = {
-    'ALL': 'ALL SECTIONS',
-    'ME1-01': 'SEC 01',
-    'ME1-02': 'SEC 02',
-    'ME1-03': 'SEC 03',
-    'ME1-04': 'SEC 04',
+    'ALL': 'DEPT-FULL',
+    'ME1-01': 'SEC:01',
+    'ME1-02': 'SEC:02',
+    'ME1-03': 'SEC:03',
+    'ME1-04': 'SEC:04',
   };
   let current = 'ME1-01';
 
