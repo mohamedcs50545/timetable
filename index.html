@@ -58,7 +58,7 @@ body {
 .masthead {
   border-bottom: 2px solid var(--border);
   padding-bottom: 20px;
-  margin-bottom: 24px;
+  margin-bottom: 20px;
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
@@ -93,7 +93,7 @@ body {
   margin-top: 2px;
 }
 
-/* Actions & Utility Controls */
+/* Actions Bar */
 .top-actions {
   display: flex;
   align-items: center;
@@ -103,20 +103,66 @@ body {
   background: var(--surface);
   border: 1px solid var(--border);
   color: var(--text-muted);
-  width: 38px;
   height: 38px;
+  padding: 0 12px;
   border-radius: 8px;
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  justify-content: center;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 600;
   cursor: pointer;
   transition: all 0.15s ease;
+}
+.action-btn.icon-only {
+  width: 38px;
+  padding: 0;
+  justify-content: center;
 }
 .action-btn:hover {
   color: var(--text-main);
   border-color: var(--border-dark);
 }
-.action-btn svg { width: 17px; height: 17px; fill: currentColor; }
+.action-btn svg { width: 16px; height: 16px; fill: currentColor; }
+
+/* Live Status Strip */
+.live-status {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 10px 16px;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  font-size: 12.5px;
+}
+.live-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.live-indicator {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #10b981;
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2);
+}
+.live-indicator.idle {
+  background: #94a3b8;
+  box-shadow: none;
+}
+.live-text strong {
+  color: var(--text-main);
+}
+.live-time-now {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11.5px;
+  color: var(--text-muted);
+}
 
 /* Control Bar */
 .control-bar {
@@ -152,7 +198,6 @@ body {
   cursor: pointer;
 }
 
-/* View switcher */
 .view-tabs {
   display: inline-flex;
   background: var(--surface-alt);
@@ -178,7 +223,7 @@ body {
   box-shadow: 0 1px 3px rgba(0,0,0,0.05);
 }
 
-/* Quizzes, Assignments & Deadlines Panel */
+/* Assessments Panel */
 .panel-assessments {
   background: var(--surface);
   border: 1px solid var(--border);
@@ -265,9 +310,7 @@ body {
   font-weight: 800;
 }
 
-/* =========================================
-   VIEW 1: FULL WEEK TIMETABLE MATRIX (GRID)
-   ========================================= */
+/* Matrix (Full Week Grid) */
 .matrix-wrapper {
   background: var(--surface);
   border: 1px solid var(--border);
@@ -336,6 +379,14 @@ body {
   border: 1px solid var(--border);
   border-left: 3.5px solid var(--c);
   box-shadow: 0 1px 2px rgba(0,0,0,0.03);
+  transition: opacity 0.15s ease, transform 0.15s ease;
+}
+.grid-card.dimmed, .timeline-card.dimmed {
+  opacity: 0.2;
+}
+.grid-card.highlighted, .timeline-card.highlighted {
+  box-shadow: 0 0 0 2px var(--c);
+  transform: scale(1.01);
 }
 .grid-card .code {
   font-family: 'JetBrains Mono', monospace;
@@ -373,13 +424,24 @@ body {
   color: var(--text-muted);
   border-top: 1px dashed var(--border);
 }
-.grid-card .room {
+
+.room-badge {
   background: var(--surface-alt);
   padding: 2px 6px;
   border-radius: 4px;
   color: var(--text-main);
   font-weight: 600;
+  cursor: pointer;
+  position: relative;
+  display: inline-block;
+  border: 1px solid transparent;
+  transition: all 0.15s ease;
 }
+.room-badge:hover {
+  border-color: var(--border-dark);
+  background: var(--surface);
+}
+
 .cell-empty {
   height: 100%;
   border-radius: 4px;
@@ -391,9 +453,7 @@ body {
   color: var(--text-subtle);
 }
 
-/* =========================================
-   VIEW 2: DAILY AGENDA TIMELINE
-   ========================================= */
+/* Timeline Layout */
 .timeline-wrap {
   max-width: 680px;
   display: flex;
@@ -463,6 +523,7 @@ body {
   border-radius: 10px;
   padding: 14px 16px;
   box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+  transition: opacity 0.15s ease, transform 0.15s ease;
 }
 .card-top {
   display: flex;
@@ -498,11 +559,6 @@ body {
   gap: 5px;
   font-size: 11.5px;
   color: var(--text-muted);
-  background: var(--surface-alt);
-  padding: 4px 9px;
-  border-radius: 6px;
-  border: 1px solid var(--border);
-  font-family: 'JetBrains Mono', monospace;
 }
 
 .break-item {
@@ -535,7 +591,7 @@ body {
   color: var(--text-muted);
 }
 
-/* Legend */
+/* Legend with Clickable Highlight Filter */
 .legend {
   margin-top: 24px;
   background: var(--surface);
@@ -544,7 +600,14 @@ body {
   padding: 14px 18px;
   display: flex;
   flex-wrap: wrap;
-  gap: 12px 22px;
+  gap: 10px 20px;
+  align-items: center;
+}
+.legend-hint {
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--text-muted);
+  margin-right: 6px;
 }
 .legend-item {
   display: flex;
@@ -552,6 +615,22 @@ body {
   gap: 8px;
   font-size: 12px;
   color: var(--text-muted);
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 6px;
+  border: 1px solid transparent;
+  transition: all 0.15s ease;
+  user-select: none;
+}
+.legend-item:hover {
+  background: var(--surface-alt);
+  color: var(--text-main);
+}
+.legend-item.active {
+  background: var(--surface-alt);
+  border-color: var(--border-dark);
+  color: var(--text-main);
+  font-weight: 700;
 }
 .legend-dot {
   width: 9px;
@@ -566,7 +645,7 @@ body {
 /* Print Stylesheet */
 @media print {
   body { background: #ffffff !important; color: #000000 !important; padding: 0 !important; }
-  .top-actions, .view-tabs, .days-bar, .panel-assessments { display: none !important; }
+  .top-actions, .view-tabs, .days-bar, .panel-assessments, .live-status, .legend-hint { display: none !important; }
   .container { max-width: 100% !important; }
   .matrix-wrapper, .grid-card, .timeline-card { box-shadow: none !important; border-color: #cbd5e1 !important; background: #ffffff !important; }
   .matrix-head, .matrix-time { background: #f8fafc !important; color: #000000 !important; }
@@ -578,7 +657,7 @@ body {
 
 <div class="container">
 
-  <!-- Official Institutional Header -->
+  <!-- Official Header -->
   <header class="masthead">
     <div>
       <div class="uni-title">Cairo University</div>
@@ -587,18 +666,31 @@ body {
       <div class="term-meta">Sophomore Level (ME-1) · Fall Semester Timetable</div>
     </div>
 
-    <!-- Actions: Print & Theme Toggle -->
+    <!-- Actions Bar -->
     <div class="top-actions">
-      <button class="action-btn" id="printBtn" title="Print or Save as PDF">
+      <button class="action-btn" id="calendarBtn" title="Download .ics file for Google / Apple Calendar">
+        <svg viewBox="0 0 24 24"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20a2 2 0 0 0 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zm0-12H5V6h14v2zm-7 5h5v5h-5v-5z"/></svg>
+        <span>Add to Calendar</span>
+      </button>
+      <button class="action-btn icon-only" id="printBtn" title="Print or Save as PDF">
         <svg viewBox="0 0 24 24"><path d="M19 8H5c-1.66 0-3 1.34-3 3v6h4v4h12v-4h4v-6c0-1.66-1.34-3-3-3zm-3 11H8v-5h8v5zm3-7c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1zm-1-9H6v4h12V3z"/></svg>
       </button>
-      <button class="action-btn" id="themeBtn" title="Toggle Dark / Light Mode">
+      <button class="action-btn icon-only" id="themeBtn" title="Toggle Dark / Light Mode">
         <svg id="themeIcon" viewBox="0 0 24 24"><path d="M12 3c-4.97 0-9 4.03-9 9s4.03 9 9 9 9-4.03 9-9c0-.46-.04-.92-.1-1.36-.98 1.37-2.58 2.26-4.4 2.26-2.98 0-5.4-2.42-5.4-5.4 0-1.81.89-3.42 2.26-4.4-.44-.06-.9-.1-1.36-.1z"/></svg>
       </button>
     </div>
   </header>
 
-  <!-- Controls Bar -->
+  <!-- Live Status Strip -->
+  <div class="live-status" id="liveStatusBox">
+    <div class="live-left">
+      <span class="live-indicator" id="liveDot"></span>
+      <span class="live-text" id="liveText">Checking schedule status...</span>
+    </div>
+    <span class="live-time-now" id="liveClock"></span>
+  </div>
+
+  <!-- Control Bar -->
   <div class="control-bar">
     <div class="view-tabs">
       <button class="view-tab active" id="btnFullWeek" onclick="setView('week')">Full Week Grid</button>
@@ -616,7 +708,7 @@ body {
     </div>
   </div>
 
-  <!-- Quizzes, Assignments & Deadlines Panel -->
+  <!-- Quizzes & Deadlines Panel -->
   <section class="panel-assessments">
     <div class="panel-head">
       <div class="panel-title">
@@ -632,19 +724,37 @@ body {
     </div>
   </section>
 
-  <!-- Day selector (Visible only in Daily Agenda) -->
+  <!-- Day Selector -->
   <div class="days-bar" id="daysBar" style="display:none;"></div>
 
-  <!-- Main View Container -->
+  <!-- View Slot -->
   <main id="viewContainer"></main>
 
-  <!-- Legend -->
+  <!-- Legend with Subject Filter -->
   <div class="legend" id="legend"></div>
 
 </div>
 
 <script>
-// Course Metadata
+// Campus Building Directory (Faculty of Engineering, Cairo University)
+const ROOM_INFO = {
+  "3103-414": "Building 3 (Mechanical Dept.) — 1st Floor, Hall 3 (Capacity: 414)",
+  "3101-306": "Building 3 (Mechanical Dept.) — 1st Floor, Hall 1 (Capacity: 306)",
+  "7104-360": "Building 7 (Main Lecture Complex) — 1st Floor, Hall 4 (Capacity: 360)",
+  "15401-300": "Building 15 (Architecture/Drafting) — 4th Floor, Drawing Hall 1",
+  "14201-50": "Building 14 — 2nd Floor, Room 1 (Capacity: 50)",
+  "14301-50": "Building 14 — 3rd Floor, Room 1 (Capacity: 50)",
+  "14302-50": "Building 14 — 3rd Floor, Room 2 (Capacity: 50)",
+  "14100-(104)": "Building 14 — 1st Floor, Room 100 (Capacity: 104)",
+  "17400-56": "Building 17 (Electrical Dept.) — 4th Floor, Room (Capacity: 56)",
+  "17301-56": "Building 17 (Electrical Dept.) — 3rd Floor, Room 1 (Capacity: 56)",
+  "17302-148": "Building 17 (Electrical Dept.) — 3rd Floor, Room 2 (Capacity: 148)",
+  "17200-56": "Building 17 (Electrical Dept.) — 2nd Floor, Room (Capacity: 56)",
+  "17102-148": "Building 17 (Electrical Dept.) — 1st Floor, Room 2 (Capacity: 148)",
+  "19302-48": "Building 19 (Mechanical Annex) — 3rd Floor, Room 2 (Capacity: 48)",
+  "19301-48": "Building 19 (Mechanical Annex) — 3rd Floor, Room 1 (Capacity: 48)"
+};
+
 const COURSES = {
   "GEN G119": { name: "Entrepreneurship & Innovation", color: "var(--c-gen)" },
   "MTH G102": { name: "Linear Algebra & Multivariable Integrals", color: "var(--c-mth)" },
@@ -654,18 +764,14 @@ const COURSES = {
   "EPE G113": { name: "Electrical & Electronics Engineering", color: "var(--c-epe)" },
 };
 
-// Quizzes & Assignments Array (Empty until instructors announce)
-const ASSESSMENTS = [
-  // Example for future use:
-  // { course: "MTH G102", title: "Linear Algebra Quiz 1", date: "Week 5", room: "Hall 7104" }
-];
+const ASSESSMENTS = [];
 
 const DAYS = [
-  { full: "Sunday", short: "SUN" },
-  { full: "Monday", short: "MON" },
-  { full: "Tuesday", short: "TUE" },
-  { full: "Wednesday", short: "WED" },
-  { full: "Thursday", short: "THU" }
+  { full: "Sunday", short: "SUN", dayIdx: 0 },
+  { full: "Monday", short: "MON", dayIdx: 1 },
+  { full: "Tuesday", short: "TUE", dayIdx: 2 },
+  { full: "Wednesday", short: "WED", dayIdx: 3 },
+  { full: "Thursday", short: "THU", dayIdx: 4 }
 ];
 
 const SLOTS = [
@@ -688,13 +794,13 @@ function formatTime(start, span) {
 
 const SESSIONS = [
   // Sunday
-  { day: "Sunday", start: 0, span: 2, group: "ALL", code: "GEN G119", type: "Lecture", room: "Hall 3103-414" },
+  { day: "Sunday", start: 0, span: 2, group: "ALL", code: "GEN G119", type: "Lecture", room: "3103-414" },
   { day: "Sunday", start: 2, span: 3, group: "ME1-01", code: "MDP G111", type: "Tutorial / Lab", room: "15401-300" },
   { day: "Sunday", start: 2, span: 3, group: "ME1-02", code: "MDP G111", type: "Tutorial / Lab", room: "14201-50" },
   { day: "Sunday", start: 2, span: 3, group: "ME1-03", code: "EPE G113", type: "Tutorial / Lab", room: "17400-56" },
 
   // Monday
-  { day: "Monday", start: 0, span: 2, group: "ALL", code: "MDP G121", type: "Lecture", room: "Hall 3101-306" },
+  { day: "Monday", start: 0, span: 2, group: "ALL", code: "MDP G121", type: "Lecture", room: "3101-306" },
   { day: "Monday", start: 2, span: 3, group: "ME1-01", code: "EMC G101", type: "Tutorial", room: "19302-48" },
   { day: "Monday", start: 2, span: 2, group: "ME1-02", code: "MTH G102", type: "Tutorial", room: "14100-(104)" },
   { day: "Monday", start: 2, span: 3, group: "ME1-03", code: "MDP G111", type: "Tutorial / Lab", room: "15401-300" },
@@ -704,18 +810,18 @@ const SESSIONS = [
   { day: "Monday", start: 5, span: 2, group: "ME1-03", code: "MTH G102", type: "Tutorial", room: "17302-148" },
 
   // Tuesday
-  { day: "Tuesday", start: 0, span: 2, group: "ALL", code: "MTH G102", type: "Lecture", room: "Hall 7104-360" },
-  { day: "Tuesday", start: 2, span: 2, group: "ALL", code: "EPE G113", type: "Lecture", room: "Hall 7104-360" },
+  { day: "Tuesday", start: 0, span: 2, group: "ALL", code: "MTH G102", type: "Lecture", room: "7104-360" },
+  { day: "Tuesday", start: 2, span: 2, group: "ALL", code: "EPE G113", type: "Lecture", room: "7104-360" },
   { day: "Tuesday", start: 4, span: 3, group: "ME1-01", code: "MDP G121", type: "Tutorial", room: "17200-56" },
   { day: "Tuesday", start: 4, span: 3, group: "ME1-02", code: "EMC G101", type: "Tutorial", room: "17102-148" },
   { day: "Tuesday", start: 4, span: 3, group: "ME1-03", code: "MDP G121", type: "Tutorial", room: "14302-50" },
 
   // Wednesday
-  { day: "Wednesday", start: 0, span: 2, group: "ALL", code: "MDP G111", type: "Lecture", room: "Hall 7104-360" },
+  { day: "Wednesday", start: 0, span: 2, group: "ALL", code: "MDP G111", type: "Lecture", room: "7104-360" },
   { day: "Wednesday", start: 2, span: 3, group: "ME1-02", code: "MDP G121", type: "Tutorial", room: "14302-50" },
   { day: "Wednesday", start: 2, span: 3, group: "ME1-03", code: "EMC G101", type: "Tutorial", room: "19302-48" },
   { day: "Wednesday", start: 2, span: 3, group: "ME1-04", code: "MDP G121", type: "Tutorial", room: "19301-48" },
-  { day: "Wednesday", start: 6, span: 2, group: "ALL", code: "EMC G101", type: "Lecture", room: "Hall 7104-360" },
+  { day: "Wednesday", start: 6, span: 2, group: "ALL", code: "EMC G101", type: "Lecture", room: "7104-360" },
 
   // Thursday
   { day: "Thursday", start: 0, span: 3, group: "ME1-04", code: "EMC G101", type: "Tutorial", room: "14100-(104)" },
@@ -726,28 +832,139 @@ const SESSIONS = [
 
 let activeView = "week";
 let activeGroup = "ME1-01";
+let highlightedCourse = null;
 const jsDay = new Date().getDay();
 let activeDay = (jsDay >= 0 && jsDay <= 4) ? DAYS[jsDay].full : "Sunday";
 
-// Assessments Panel
-function renderAssessments() {
-  const container = document.getElementById("assessmentsList");
-  if (ASSESSMENTS.length === 0) {
-    container.innerHTML = `
-      <div class="empty-assessments">
-        <span>No upcoming quizzes, assignments, or deadlines currently scheduled.</span>
-      </div>`;
+function parseMinutes(t) {
+  const [h, m] = t.split(":").map(Number);
+  return h * 60 + m;
+}
+
+// Live Status Engine
+function updateLiveTracker() {
+  const now = new Date();
+  const dayIndex = now.getDay();
+  const currentMinutes = now.getHours() * 60 + now.getMinutes();
+
+  document.getElementById("liveClock").textContent = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+  const dot = document.getElementById("liveDot");
+  const text = document.getElementById("liveText");
+
+  // If Friday (5) or Saturday (6)
+  if (dayIndex === 5 || dayIndex === 6) {
+    dot.className = "live-indicator idle";
+    text.innerHTML = "Weekend · <strong>No classes scheduled today</strong>";
     return;
   }
-  container.innerHTML = ASSESSMENTS.map(item => `
-    <div style="display:flex;justify-content:space-between;align-items:center;padding:9px 12px;background:var(--surface-alt);border-radius:8px;margin-bottom:6px;border-left:3.5px solid ${(COURSES[item.course]||{}).color || '#2563eb'}">
-      <div>
-        <strong style="font-size:13px;color:var(--text-main)">${item.title}</strong>
-        <div style="font-size:11px;color:var(--text-muted)">${item.course} · ${item.room}</div>
-      </div>
-      <span style="font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:600;background:rgba(225,29,72,0.1);color:#e11d48;padding:3px 8px;border-radius:4px">${item.date}</span>
-    </div>
-  `).join("");
+
+  const todayName = DAYS[dayIndex].full;
+  const todaySessions = SESSIONS.filter(s => s.day === todayName && (s.group === "ALL" || s.group === activeGroup))
+                                .sort((a, b) => a.start - b.start);
+
+  if (todaySessions.length === 0) {
+    dot.className = "live-indicator idle";
+    text.innerHTML = `No classes scheduled today (${todayName})`;
+    return;
+  }
+
+  let activeSession = null;
+  let nextSession = null;
+
+  for (const s of todaySessions) {
+    const startMin = parseMinutes(TIME_STARTS[s.start]);
+    const endMin = parseMinutes(TIME_ENDS[s.start + s.span - 1]);
+
+    if (currentMinutes >= startMin && currentMinutes < endMin) {
+      activeSession = { ...s, remaining: endMin - currentMinutes };
+      break;
+    } else if (currentMinutes < startMin) {
+      if (!nextSession) {
+        nextSession = { ...s, wait: startMin - currentMinutes };
+      }
+    }
+  }
+
+  if (activeSession) {
+    dot.className = "live-indicator";
+    text.innerHTML = `Happening Now: <strong>${activeSession.code} (${activeSession.type})</strong> in ${activeSession.room} · ${activeSession.remaining}m left`;
+  } else if (nextSession) {
+    dot.className = "live-indicator idle";
+    const hrs = Math.floor(nextSession.wait / 60);
+    const mins = nextSession.wait % 60;
+    const timeStr = hrs > 0 ? `${hrs}h ${mins}m` : `${mins}m`;
+    text.innerHTML = `Next Session: <strong>${nextSession.code}</strong> at ${TIME_STARTS[nextSession.start]} in ${nextSession.room} (in ${timeStr})`;
+  } else {
+    dot.className = "live-indicator idle";
+    text.innerHTML = `Classes completed for today (${todayName}) · Have a restful evening!`;
+  }
+}
+
+// Interactive Room Guide Tooltip Alert
+function showRoomDetails(roomCode) {
+  const info = ROOM_INFO[roomCode] || "Faculty of Engineering · Giza Campus";
+  alert(`📍 Hall / Lab Location Details:\n\nRoom Code: ${roomCode}\n${info}`);
+}
+
+// iCalendar (.ics) Generator
+function exportToCalendar() {
+  const activeSessions = SESSIONS.filter(s => s.group === "ALL" || s.group === activeGroup);
+  
+  // Weekly recurrent .ics template
+  let icsLines = [
+    "BEGIN:VCALENDAR",
+    "VERSION:2.0",
+    "PRODID:-//Cairo University//Mechanical Engineering 1 Schedule//EN",
+    "CALSCALE:GREGORIAN",
+    "METHOD:PUBLISH",
+    "X-WR-CALNAME:CUFE ME-1 (" + activeGroup + ")",
+    "X-WR-TIMEZONE:Africa/Cairo"
+  ];
+
+  // Base day map to standard 2-letter RRULE days
+  const rruleDays = {
+    "Sunday": "SU",
+    "Monday": "MO",
+    "Tuesday": "TU",
+    "Wednesday": "WE",
+    "Thursday": "TH"
+  };
+
+  const dayOffsets = { "Sunday": 0, "Monday": 1, "Tuesday": 2, "Wednesday": 3, "Thursday": 4 };
+
+  activeSessions.forEach((s, idx) => {
+    const course = COURSES[s.code] || { name: s.code };
+    const byDay = rruleDays[s.day];
+    const sTime = TIME_STARTS[s.start].replace(":", "") + "00";
+    const eTime = TIME_ENDS[s.start + s.span - 1].replace(":", "") + "00";
+    const roomName = (ROOM_INFO[s.room] || s.room).replace(/,/g, "\\,");
+
+    icsLines.push("BEGIN:VEVENT");
+    icsLines.push(`UID:cufe-me1-${activeGroup}-${idx}@eng.cu.edu.eg`);
+    icsLines.push(`DTSTAMP:20260901T080000Z`);
+    // Example anchor start date
+    const dVal = 20 + dayOffsets[s.day];
+    icsLines.push(`DTSTART;TZID=Africa/Cairo:202609${dVal}T${sTime}`);
+    icsLines.push(`DTEND;TZID=Africa/Cairo:202609${dVal}T${eTime}`);
+    icsLines.push(`RRULE:FREQ=WEEKLY;BYDAY=${byDay}`);
+    icsLines.push(`SUMMARY:${s.code} - ${s.type}`);
+    icsLines.push(`DESCRIPTION:${course.name} (${s.group === 'ALL' ? 'All Sections' : s.group})`);
+    icsLines.push(`LOCATION:${roomName}`);
+    icsLines.push("END:VEVENT");
+  });
+
+  icsLines.push("END:VCALENDAR");
+
+  const blob = new Blob([icsLines.join("\r\n")], { type: "text/calendar;charset=utf-8" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = `CUFE_ME1_${activeGroup}_Schedule.ics`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
 }
 
 // Full Week Grid Matrix
@@ -810,12 +1027,15 @@ function renderWeekMatrix() {
       const isShared = sess.group === "ALL";
       const timeStr = formatTime(sess.start, sess.span);
 
+      const isDimmed = highlightedCourse && highlightedCourse !== sess.code;
+      const isHighlighted = highlightedCourse === sess.code;
+
       const cell = document.createElement("div");
       cell.className = "matrix-cell" + (isLastCol ? " edge-right" : "");
       cell.style.gridColumn = `${col}`;
       cell.style.gridRow = `${sess.start + 2} / span ${sess.span}`;
       cell.innerHTML = `
-        <div class="grid-card" style="--c: ${course.color}">
+        <div class="grid-card ${isDimmed ? 'dimmed' : ''} ${isHighlighted ? 'highlighted' : ''}" style="--c: ${course.color}">
           <div style="display:flex;justify-content:space-between;align-items:center">
             <span class="code">${sess.code}</span>
             <span class="type ${isShared ? 'all' : ''}">${isShared ? 'LEC · ALL' : sess.type}</span>
@@ -823,7 +1043,7 @@ function renderWeekMatrix() {
           <div class="title">${course.name}</div>
           <div class="footer">
             <span>${timeStr}</span>
-            <span class="room">${sess.room}</span>
+            <span class="room-badge" onclick="showRoomDetails('${sess.room}')" title="Click for building guide">${sess.room}</span>
           </div>
         </div>`;
       grid.appendChild(cell);
@@ -866,6 +1086,9 @@ function renderDailyAgenda() {
     const startTime = TIME_STARTS[s.start];
     const endTime = TIME_ENDS[s.start + s.span - 1];
 
+    const isDimmed = highlightedCourse && highlightedCourse !== s.code;
+    const isHighlighted = highlightedCourse === s.code;
+
     if (i > 0) {
       const prevEndSlot = daySessions[i - 1].start + daySessions[i - 1].span;
       const gapSlots = s.start - prevEndSlot;
@@ -889,7 +1112,7 @@ function renderDailyAgenda() {
           <div class="rail-dot" style="--c: ${course.color}"></div>
           <div class="rail-line"></div>
         </div>
-        <div class="timeline-card">
+        <div class="timeline-card ${isDimmed ? 'dimmed' : ''} ${isHighlighted ? 'highlighted' : ''}">
           <div class="card-top">
             <span class="card-code" style="--c: ${course.color}">${s.code}</span>
             <div style="display:flex;gap:4px">
@@ -898,7 +1121,9 @@ function renderDailyAgenda() {
             </div>
           </div>
           <div class="card-title">${course.name}</div>
-          <div class="card-room">${s.room}</div>
+          <div class="card-room">
+            <span class="room-badge" onclick="showRoomDetails('${s.room}')" title="Click for building guide">${s.room}</span>
+          </div>
         </div>
       </div>`;
   }
@@ -920,24 +1145,38 @@ function renderDaysBar() {
   `).join("");
 }
 
+// Legend with Toggle Filter
 function renderLegend() {
   const legend = document.getElementById("legend");
-  legend.innerHTML = Object.entries(COURSES).map(([code, c]) => `
-    <div class="legend-item">
-      <span class="legend-dot" style="background:${c.color}"></span>
-      <b>${code}</b> ${c.name}
-    </div>
-  `).join("");
+  legend.innerHTML = `
+    <span class="legend-hint">Filter Subject:</span>
+    ${Object.entries(COURSES).map(([code, c]) => `
+      <div class="legend-item ${highlightedCourse === code ? 'active' : ''}" onclick="toggleHighlight('${code}')">
+        <span class="legend-dot" style="background:${c.color}"></span>
+        <b>${code}</b> ${c.name}
+      </div>
+    `).join("")}
+  `;
+}
+
+function toggleHighlight(code) {
+  highlightedCourse = (highlightedCourse === code) ? null : code;
+  renderLegend();
+  if (activeView === "week") {
+    renderWeekMatrix();
+  } else {
+    renderDailyAgenda();
+  }
 }
 
 function render() {
-  renderAssessments();
   renderDaysBar();
   if (activeView === "week") {
     renderWeekMatrix();
   } else {
     renderDailyAgenda();
   }
+  updateLiveTracker();
 }
 
 function setView(mode) {
@@ -958,7 +1197,7 @@ document.getElementById("sectionSelect").addEventListener("change", (e) => {
   render();
 });
 
-// Theme Management with Persistence
+// Theme Management
 function initTheme() {
   const saved = localStorage.getItem("cufe_theme") || "light";
   document.documentElement.setAttribute("data-theme", saved);
@@ -982,14 +1221,17 @@ document.getElementById("themeBtn").addEventListener("click", () => {
   updateThemeIcon(next);
 });
 
-// Print trigger
 document.getElementById("printBtn").addEventListener("click", () => {
   window.print();
 });
 
+document.getElementById("calendarBtn").addEventListener("click", exportToCalendar);
+
+// Initial setup
 initTheme();
 renderLegend();
 render();
+setInterval(updateLiveTracker, 60000); // Live status update every minute
 </script>
 </body>
 </html>
