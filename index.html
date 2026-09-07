@@ -3,39 +3,43 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>CUFE — Mechanical Engineering 1</title>
+<title>CUFE · Mechanical Engineering-1</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500;600;700&family=Geist:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root {
-  --bg-app: #f8fafc;
-  --bg-card: #ffffff;
-  --text-main: #0f172a;
-  --text-muted: #64748b;
-  --border: #e2e8f0;
-  --border-subtle: #f1f5f9;
+  --bg-app: #080b11;
+  --bg-surface: #0f1523;
+  --bg-card: #141c2e;
+  --border: #1e293b;
+  --border-focus: #334155;
   
-  --c-gen: #f59e0b;
-  --c-mth: #3b82f6;
-  --c-emc: #8b5cf6;
-  --c-mdp1: #06b6d4;
-  --c-mdp2: #10b981;
-  --c-epe: #f43f5e;
+  --text-primary: #f8fafc;
+  --text-secondary: #94a3b8;
+  --text-tertiary: #475569;
+
+  --accent-gen: #f59e0b;
+  --accent-mth: #38bdf8;
+  --accent-emc: #a855f7;
+  --accent-mdp1: #06b6d4;
+  --accent-mdp2: #10b981;
+  --accent-epe: #f43f5e;
 }
 
 *{box-sizing:border-box;margin:0;padding:0;}
+
 body {
   background-color: var(--bg-app);
-  color: var(--text-main);
-  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  color: var(--text-primary);
+  font-family: 'Geist', -apple-system, sans-serif;
   min-height: 100vh;
-  padding: 32px 20px 80px;
+  padding: 36px 20px 80px;
   -webkit-font-smoothing: antialiased;
 }
 
 .container {
-  max-width: 1260px;
+  max-width: 1240px;
   margin: 0 auto;
 }
 
@@ -46,157 +50,153 @@ body {
   align-items: flex-end;
   flex-wrap: wrap;
   gap: 20px;
-  margin-bottom: 28px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 24px;
 }
 
-.header-badge {
+.brand-kicker {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  font-size: 11.5px;
-  font-weight: 600;
-  color: #0284c7;
-  background: #e0f2fe;
-  padding: 4px 10px;
-  border-radius: 9999px;
-  margin-bottom: 10px;
-  letter-spacing: 0.02em;
+  gap: 8px;
+  font-family: 'Geist Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #38bdf8;
+  margin-bottom: 8px;
 }
-.header-badge .pulse {
+.brand-kicker .indicator {
   width: 6px;
   height: 6px;
   border-radius: 50%;
-  background: #0284c7;
-  box-shadow: 0 0 0 0 rgba(2, 132, 199, 0.4);
+  background: #38bdf8;
+  box-shadow: 0 0 10px #38bdf8;
 }
 
 .header h1 {
-  font-size: 28px;
-  font-weight: 800;
-  letter-spacing: -0.02em;
-  color: #0f172a;
+  font-size: 26px;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  color: var(--text-primary);
 }
+
 .header p {
-  color: var(--text-muted);
-  font-size: 14px;
+  color: var(--text-secondary);
+  font-size: 13.5px;
   margin-top: 4px;
 }
 
-.meta-box {
+.specs-strip {
   display: flex;
-  gap: 16px;
-  background: #fff;
+  gap: 12px;
+  background: var(--bg-surface);
   border: 1px solid var(--border);
-  padding: 10px 16px;
-  border-radius: 12px;
-  box-shadow: 0 1px 2px rgba(0,0,0,0.03);
+  padding: 8px 14px;
+  border-radius: 8px;
 }
-.meta-item {
-  font-size: 12px;
-  color: var(--text-muted);
+.spec-block {
+  font-family: 'Geist Mono', monospace;
+  font-size: 11px;
+  color: var(--text-secondary);
 }
-.meta-item strong {
+.spec-block span {
   display: block;
-  font-size: 13px;
-  color: var(--text-main);
-  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
   font-weight: 600;
+  color: var(--text-primary);
+  margin-top: 2px;
 }
 
 /* Tabs */
-.tabs-wrapper {
+.tabs-bar {
   display: flex;
-  background: #e2e8f0;
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
   padding: 4px;
-  border-radius: 12px;
+  border-radius: 8px;
   width: fit-content;
   gap: 4px;
-  margin-bottom: 24px;
-  overflow-x: auto;
-  max-width: 100%;
+  margin-bottom: 20px;
 }
 .tab-btn {
   border: none;
   background: transparent;
-  padding: 8px 18px;
-  font-family: inherit;
-  font-size: 13px;
-  font-weight: 600;
-  color: #475569;
-  border-radius: 8px;
+  padding: 7px 16px;
+  font-family: 'Geist Mono', monospace;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  border-radius: 6px;
   cursor: pointer;
-  transition: all 0.18s ease;
-  white-space: nowrap;
+  transition: all 0.15s ease;
 }
 .tab-btn:hover {
-  color: #0f172a;
+  color: var(--text-primary);
+  background: rgba(255, 255, 255, 0.03);
 }
 .tab-btn.active {
-  background: #ffffff;
-  color: #0f172a;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+  background: #1e293b;
+  color: #fff;
+  font-weight: 600;
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,0.08);
 }
 
-/* Timetable Grid */
-.table-card {
-  background: #ffffff;
+/* Grid Wrapper */
+.grid-container {
+  background: var(--bg-surface);
   border: 1px solid var(--border);
-  border-radius: 16px;
-  box-shadow: 0 4px 20px -4px rgba(15, 23, 42, 0.05);
+  border-radius: 12px;
   overflow: hidden;
 }
-.table-scroll {
+.grid-scroll {
   overflow-x: auto;
 }
+
 .grid {
   display: grid;
-  grid-template-columns: 110px repeat(5, minmax(180px, 1fr));
-  grid-template-rows: 48px repeat(8, minmax(78px, auto));
-  min-width: 960px;
+  grid-template-columns: 100px repeat(5, minmax(190px, 1fr));
+  grid-template-rows: 44px repeat(8, minmax(80px, auto));
+  min-width: 1000px;
 }
 
 /* Headers */
 .cell-header {
-  background: #f8fafc;
+  background: #0d121c;
   border-bottom: 1px solid var(--border);
   border-right: 1px solid var(--border);
-  padding: 12px 14px;
-  display: flex;
-  align-items: center;
-  font-size: 13px;
-  font-weight: 700;
-  color: #334155;
-  letter-spacing: 0.01em;
-}
-.cell-header.corner {
-  background: #f1f5f9;
-  font-size: 11.5px;
-  color: var(--text-muted);
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  justify-content: center;
-  font-family: 'JetBrains Mono', monospace;
-}
-.cell-header.edge-right {
-  border-right: none;
-}
-
-/* Time slot label */
-.time-label {
-  background: #fcfdfe;
-  border-bottom: 1px solid var(--border);
-  border-right: 1px solid var(--border);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-family: 'JetBrains Mono', monospace;
+  padding: 10px 14px;
+  font-family: 'Geist Mono', monospace;
   font-size: 12px;
   font-weight: 600;
-  color: #64748b;
-  letter-spacing: -0.02em;
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  letter-spacing: 0.02em;
+}
+.cell-header.corner {
+  color: var(--text-tertiary);
+  font-size: 10.5px;
+  justify-content: center;
+  background: #090d14;
+}
+.cell-header.edge-right {border-right: none;}
+
+/* Time slots column */
+.cell-time {
+  background: #0c1018;
+  border-bottom: 1px solid var(--border);
+  border-right: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Geist Mono', monospace;
+  font-size: 11.5px;
+  font-weight: 500;
+  color: var(--text-secondary);
 }
 
-/* General cell */
+/* Grid Cell */
 .cell {
   border-bottom: 1px solid var(--border);
   border-right: 1px solid var(--border);
@@ -204,150 +204,141 @@ body {
   display: flex;
   flex-direction: column;
 }
-.cell.edge-right {
-  border-right: none;
-}
+.cell.edge-right {border-right: none;}
 
-/* Cards */
+/* Class Cards */
 .slot-card {
   height: 100%;
-  border-radius: 10px;
-  padding: 10px 12px;
+  border-radius: 6px;
+  padding: 9px 11px;
   display: flex;
   flex-direction: column;
-  background: #ffffff;
-  border: 1px solid var(--border);
-  border-left: 4px solid var(--card-color);
-  box-shadow: 0 2px 4px rgba(15, 23, 42, 0.02);
-  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  background: var(--bg-card);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-left: 3px solid var(--accent);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+  transition: border-color 0.15s ease, background-color 0.15s ease;
 }
 .slot-card:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 6px 14px -3px rgba(15, 23, 42, 0.08);
+  background: #172136;
+  border-color: rgba(255, 255, 255, 0.12);
 }
 
-.card-top {
+.card-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 6px;
-  margin-bottom: 6px;
 }
 .card-code {
-  font-family: 'JetBrains Mono', monospace;
+  font-family: 'Geist Mono', monospace;
   font-weight: 700;
   font-size: 13px;
-  color: #0f172a;
+  color: #f1f5f9;
 }
-.card-badges {
+.tags-row {
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: 5px;
 }
 .badge-type {
-  font-size: 10px;
-  font-weight: 700;
-  padding: 2px 6px;
-  border-radius: 4px;
-  letter-spacing: 0.03em;
-  text-transform: uppercase;
-  color: #fff;
-  background-color: var(--card-color);
-}
-.badge-shared {
+  font-family: 'Geist Mono', monospace;
   font-size: 9.5px;
   font-weight: 700;
-  padding: 2px 6px;
-  border-radius: 4px;
-  background: #fef3c7;
-  color: #92400e;
-  border: 1px solid #fde68a;
-  letter-spacing: 0.02em;
+  padding: 2px 5px;
+  border-radius: 3px;
+  color: #fff;
+  background: var(--accent);
+}
+.badge-shared {
+  font-family: 'Geist Mono', monospace;
+  font-size: 9px;
+  font-weight: 700;
+  padding: 1px 5px;
+  border-radius: 3px;
+  background: rgba(245, 158, 11, 0.15);
+  color: #fbbf24;
+  border: 1px solid rgba(245, 158, 11, 0.3);
 }
 
-.card-name {
-  font-size: 12px;
-  font-weight: 600;
-  color: #334155;
+.card-title {
+  font-size: 11.5px;
+  font-weight: 500;
+  color: #cbd5e1;
+  margin-top: 4px;
   line-height: 1.35;
-  margin-bottom: 8px;
 }
 
-.card-footer {
+.card-bottom {
   margin-top: auto;
+  padding-top: 8px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-size: 11px;
-  color: #64748b;
-  font-family: 'JetBrains Mono', monospace;
-  border-top: 1px dashed #edf2f7;
-  padding-top: 6px;
+  font-family: 'Geist Mono', monospace;
+  font-size: 10.5px;
+  border-top: 1px solid rgba(255, 255, 255, 0.04);
 }
-.card-time {
-  font-weight: 600;
-  color: #475569;
+.card-timing {
+  color: var(--text-secondary);
+  font-weight: 500;
 }
 .card-room {
-  display: inline-flex;
-  align-items: center;
-  gap: 3px;
-  background: #f1f5f9;
+  background: rgba(255, 255, 255, 0.04);
   padding: 2px 6px;
   border-radius: 4px;
-  font-weight: 600;
-  color: #334155;
+  color: #94a3b8;
+  border: 1px solid rgba(255, 255, 255, 0.04);
 }
 
-/* Empty free slot */
+/* Empty Cell */
 .slot-empty {
   height: 100%;
-  border-radius: 8px;
-  background: #fafbfc;
-  border: 1px dashed #e2e8f0;
+  border-radius: 6px;
+  background: rgba(15, 23, 42, 0.3);
+  border: 1px dashed rgba(255, 255, 255, 0.05);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 11px;
-  font-weight: 600;
-  color: #cbd5e1;
-  font-family: 'JetBrains Mono', monospace;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
+  font-family: 'Geist Mono', monospace;
+  font-size: 10.5px;
+  font-weight: 500;
+  color: #334155;
+  letter-spacing: 0.06em;
 }
 
 /* Legend */
-.legend-box {
-  margin-top: 24px;
-  background: #ffffff;
+.legend-strip {
+  margin-top: 20px;
+  background: var(--bg-surface);
   border: 1px solid var(--border);
-  border-radius: 14px;
-  padding: 16px 20px;
+  border-radius: 8px;
+  padding: 12px 18px;
   display: flex;
   flex-wrap: wrap;
   gap: 12px 24px;
 }
-.legend-item {
+.legend-entry {
   display: flex;
   align-items: center;
   gap: 8px;
-  font-size: 12.5px;
-  color: var(--text-muted);
+  font-size: 12px;
+  color: var(--text-secondary);
 }
 .legend-dot {
-  width: 10px;
-  height: 10px;
-  border-radius: 3px;
+  width: 8px;
+  height: 8px;
+  border-radius: 2px;
 }
-.legend-item strong {
-  color: var(--text-main);
-  font-family: 'JetBrains Mono', monospace;
-  font-weight: 700;
+.legend-entry b {
+  font-family: 'Geist Mono', monospace;
+  color: var(--text-primary);
+  font-weight: 600;
 }
 
 @media(max-width: 768px) {
   .header {flex-direction: column; align-items: flex-start;}
-  .meta-box {width: 100%; justify-content: space-between;}
+  .specs-strip {width: 100%; justify-content: space-between;}
 }
 </style>
 </head>
@@ -357,61 +348,61 @@ body {
   
   <header class="header">
     <div>
-      <div class="header-badge">
-        <span class="pulse"></span> Cairo University · Engineering
+      <div class="brand-kicker">
+        <span class="indicator"></span> Cairo University · Engineering
       </div>
       <h1>Mechanical Engineering — 1</h1>
-      <p>Sophomore Fall Semester Schedule · Academic Year</p>
+      <p>Sophomore Fall Semester Schedule</p>
     </div>
 
-    <div class="meta-box">
-      <div class="meta-item">
+    <div class="specs-strip">
+      <div class="spec-block">
         SECTIONS
-        <strong>ME1-01 → 04</strong>
+        <span>ME1-01 → 04</span>
       </div>
-      <div class="meta-item">
-        WORK DAYS
-        <strong>Sun – Thu</strong>
+      <div class="spec-block">
+        PERIOD
+        <span>Sun – Thu</span>
       </div>
-      <div class="meta-item">
-        TIME
-        <strong>08:00 – 15:50</strong>
+      <div class="spec-block">
+        HOURS
+        <span>08:00 – 15:50</span>
       </div>
     </div>
   </header>
 
-  <div class="tabs-wrapper" id="tabs"></div>
+  <div class="tabs-bar" id="tabs"></div>
 
-  <div class="table-card">
-    <div class="table-scroll">
+  <div class="grid-container">
+    <div class="grid-scroll">
       <div class="grid" id="grid"></div>
     </div>
   </div>
 
-  <div class="legend-box" id="legend"></div>
+  <div class="legend-strip" id="legend"></div>
 
 </div>
 
 <script>
 const COURSES = {
-  "GEN G119": { name: "Entrepreneurship & Innovation", color: "var(--c-gen)" },
-  "MTH G102": { name: "Linear Algebra & Multivariable Integrals", color: "var(--c-mth)" },
-  "EMC G101": { name: "Dynamics of Rigid Bodies", color: "var(--c-emc)" },
-  "MDP G111": { name: "Computer-Aided Mechanical Drafting", color: "var(--c-mdp1)" },
-  "MDP G121": { name: "Materials Science", color: "var(--c-mdp2)" },
-  "EPE G113": { name: "Electrical & Electronics Engineering", color: "var(--c-epe)" },
+  "GEN G119": { name: "Entrepreneurship & Innovation", color: "var(--accent-gen)" },
+  "MTH G102": { name: "Linear Algebra & Multivariable Integrals", color: "var(--accent-mth)" },
+  "EMC G101": { name: "Dynamics of Rigid Bodies", color: "var(--accent-emc)" },
+  "MDP G111": { name: "Computer-Aided Mechanical Drafting", color: "var(--accent-mdp1)" },
+  "MDP G121": { name: "Materials Science", color: "var(--accent-mdp2)" },
+  "EPE G113": { name: "Electrical & Electronics Engineering", color: "var(--accent-epe)" },
 };
 
 const DAYS = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday"];
 const SLOTS = [
-  "8:00 - 8:50",
-  "9:00 - 9:50",
+  "08:00 - 08:50",
+  "09:00 - 09:50",
   "10:00 - 10:50",
   "11:00 - 11:50",
   "12:00 - 12:50",
-  "1:00 - 1:50",
-  "2:00 - 2:50",
-  "3:00 - 3:50",
+  "01:00 - 01:50",
+  "02:00 - 02:50",
+  "03:00 - 03:50",
 ];
 
 const TIME_STARTS = ["08:00", "09:00", "10:00", "11:00", "12:00", "01:00", "02:00", "03:00"];
@@ -463,7 +454,7 @@ function courseInfo(raw){
   const parts = raw.split(',');
   const code = parts[0].trim();
   const type = (parts[1] || '').trim().replace('.', '');
-  const meta = COURSES[code] || { name: code, color: 'var(--c-mth)' };
+  const meta = COURSES[code] || { name: code, color: 'var(--accent-mth)' };
   return { code, type, name: meta.name, color: meta.color };
 }
 
@@ -474,17 +465,17 @@ function cardHTML(sess, extraLabel){
   const timeStr = formatTime(sess.start, sess.span);
 
   return `
-    <div class="slot-card" style="--card-color: ${info.color}">
-      <div class="card-top">
+    <div class="slot-card" style="--accent: ${info.color}">
+      <div class="card-header">
         <span class="card-code">${info.code}</span>
-        <div class="card-badges">
+        <div class="tags-row">
           ${isShared ? '<span class="badge-shared">ALL</span>' : ''}
           <span class="badge-type">${info.type}</span>
         </div>
       </div>
-      <div class="card-name">${displayTitle}</div>
-      <div class="card-footer">
-        <span class="card-time">${timeStr}</span>
+      <div class="card-title">${displayTitle}</div>
+      <div class="card-bottom">
+        <span class="card-timing">${timeStr}</span>
         <span class="card-room">${sess.room}</span>
       </div>
     </div>`;
@@ -493,7 +484,7 @@ function cardHTML(sess, extraLabel){
 function renderHeader(grid){
   const corner = document.createElement('div');
   corner.className = 'cell-header corner';
-  corner.textContent = 'TIME';
+  corner.textContent = 'SLOT';
   corner.style.gridColumn = '1';
   corner.style.gridRow = '1';
   grid.appendChild(corner);
@@ -503,7 +494,7 @@ function renderHeader(grid){
     c.className = 'cell-header' + (i === DAYS.length - 1 ? ' edge-right' : '');
     c.style.gridColumn = `${i + 2}`;
     c.style.gridRow = '1';
-    c.textContent = d;
+    c.textContent = d.toUpperCase();
     grid.appendChild(c);
   });
 }
@@ -515,7 +506,7 @@ function renderGrid(group){
 
   SLOTS.forEach((slot, s) => {
     const timeCell = document.createElement('div');
-    timeCell.className = 'time-label';
+    timeCell.className = 'cell-time';
     timeCell.style.gridColumn = '1';
     timeCell.style.gridRow = `${s + 2}`;
     timeCell.textContent = slot;
@@ -570,7 +561,7 @@ function renderAllGroupsGrid(){
 
   SLOTS.forEach((slot, s) => {
     const timeCell = document.createElement('div');
-    timeCell.className = 'time-label';
+    timeCell.className = 'cell-time';
     timeCell.style.gridColumn = '1';
     timeCell.style.gridRow = `${s + 2}`;
     timeCell.textContent = slot;
@@ -617,9 +608,9 @@ function renderAllGroupsGrid(){
 function renderLegend(){
   const legendWrap = document.getElementById('legend');
   legendWrap.innerHTML = Object.entries(COURSES).map(([code, data]) => `
-    <div class="legend-item">
+    <div class="legend-entry">
       <span class="legend-dot" style="background:${data.color}"></span>
-      <strong>${code}</strong> ${data.name}
+      <b>${code}</b> ${data.name}
     </div>
   `).join('');
 }
@@ -628,11 +619,11 @@ function init(){
   const tabsWrap = document.getElementById('tabs');
   const groups = ['ALL', 'ME1-01', 'ME1-02', 'ME1-03', 'ME1-04'];
   const labels = {
-    'ALL': 'All Sections',
-    'ME1-01': 'Section 01',
-    'ME1-02': 'Section 02',
-    'ME1-03': 'Section 03',
-    'ME1-04': 'Section 04',
+    'ALL': 'ALL SECTIONS',
+    'ME1-01': 'SEC 01',
+    'ME1-02': 'SEC 02',
+    'ME1-03': 'SEC 03',
+    'ME1-04': 'SEC 04',
   };
   let current = 'ME1-01';
 
