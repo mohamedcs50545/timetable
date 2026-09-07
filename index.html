@@ -118,7 +118,8 @@ body{
 }
 .grid{
   display:grid;
-  grid-template-columns:88px repeat(5, minmax(150px,1fr));
+  grid-template-columns:88px repeat(5, minmax(150px, 1fr));
+  grid-template-rows:52px repeat(8, minmax(64px, auto));
   min-width:900px;
 }
 .cell{
@@ -127,8 +128,10 @@ body{
   padding:8px;
   position:relative;
   min-height:64px;
+  display:flex;
+  flex-direction:column;
 }
-.grid > .cell:nth-child(6n){border-right:none;}
+.cell.edge-right{border-right:none !important;}
 
 .cell.head{
   background:var(--navy);
@@ -171,9 +174,12 @@ body{
   border-left:3px solid var(--c);
   background:color-mix(in srgb, var(--c) 8%, #fff);
   border-radius:5px;
-  padding:7px 9px 8px;
+  padding:8px 10px;
   height:100%;
   font-size:12.2px;
+  display:flex;
+  flex-direction:column;
+  box-sizing:border-box;
 }
 .slot-card .code{
   font-weight:700;
@@ -200,8 +206,17 @@ body{
   margin-top:3px;
   line-height:1.25;
 }
-.slot-card .room{
+.slot-card .time-range{
   margin-top:5px;
+  font-family:'IBM Plex Mono',monospace;
+  font-size:10px;
+  font-weight:600;
+  color:var(--ink-soft);
+  letter-spacing:.02em;
+}
+.slot-card .room{
+  margin-top:auto;
+  padding-top:6px;
   font-family:'IBM Plex Mono',monospace;
   font-size:10.5px;
   color:var(--ink-soft);
@@ -235,6 +250,7 @@ body{
   letter-spacing:.06em;
   text-transform:uppercase;
   font-family:'IBM Plex Mono',monospace;
+  box-sizing:border-box;
 }
 
 .legend{
@@ -314,7 +330,6 @@ body{
 
 </div>
 <script>
-// Sophomore (2nd year) Fall — Mechanical Engineering-1, Cairo University Faculty of Engineering
 const COURSES = {
   "GEN G119": { name: "Entrepreneurship & Innovation", tag: "gen" },
   "MTH G102": { name: "Linear Algebra & Multivariable Integrals", tag: "mth" },
@@ -326,88 +341,59 @@ const COURSES = {
 
 const DAYS = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday"];
 const SLOTS = [
-  "8:00-8:50","9:00-9:50","10:00-10:50","11:00-11:50",
-  "12:00-12:50","1:00-1:50","2:00-2:50","3:00-3:50",
+  "8:00-8:50",
+  "9:00-9:50",
+  "10:00-10:50",
+  "11:00-11:50",
+  "12:00-12:50",
+  "1:00-1:50",
+  "2:00-2:50",
+  "3:00-3:50",
 ];
 
-const ENTRIES = [
-// Sunday
-{"time": "8:00-8:50", "day": "Sunday", "group": "ALL", "course": "GEN G119, Lec.", "room": "3103-414"},
-{"time": "9:00-9:50", "day": "Sunday", "group": "ALL", "course": "GEN G119, Lec.", "room": "3103-414"},
-{"time": "10:00-10:50", "day": "Sunday", "group": "ME1-01", "course": "MDP G111, Tut.", "room": "15401-300"},
-{"time": "10:00-10:50", "day": "Sunday", "group": "ME1-02", "course": "MDP G111, Tut.", "room": "14201-50"},
-{"time": "10:00-10:50", "day": "Sunday", "group": "ME1-03", "course": "EPE G113, Tut.", "room": "17400-56"},
-{"time": "11:00-11:50", "day": "Sunday", "group": "ME1-01", "course": "MDP G111, Tut.", "room": "15401-300"},
-{"time": "11:00-11:50", "day": "Sunday", "group": "ME1-02", "course": "MDP G111, Tut.", "room": "14201-50"},
-{"time": "11:00-11:50", "day": "Sunday", "group": "ME1-03", "course": "EPE G113, Tut.", "room": "17400-56"},
-{"time": "12:00-12:50", "day": "Sunday", "group": "ME1-01", "course": "MDP G111, Tut.", "room": "15401-300"},
-{"time": "12:00-12:50", "day": "Sunday", "group": "ME1-02", "course": "MDP G111, Tut.", "room": "14201-50"},
-{"time": "12:00-12:50", "day": "Sunday", "group": "ME1-03", "course": "EPE G113, Tut.", "room": "17400-56"},
+const TIME_STARTS = ["8:00", "9:00", "10:00", "11:00", "12:00", "1:00", "2:00", "3:00"];
+const TIME_ENDS   = ["8:50", "9:50", "10:50", "11:50", "12:50", "1:50", "2:50", "3:50"];
 
-// Monday
-{"time": "8:00-8:50", "day": "Monday", "group": "ALL", "course": "MDP G121, Lec.", "room": "3101-306"},
-{"time": "9:00-9:50", "day": "Monday", "group": "ALL", "course": "MDP G121, Lec.", "room": "3101-306"},
-{"time": "10:00-10:50", "day": "Monday", "group": "ME1-01", "course": "EMC G101, Tut.", "room": "19302-48"},
-{"time": "10:00-10:50", "day": "Monday", "group": "ME1-02", "course": "MTH G102, Tut.", "room": "14100-(104)"},
-{"time": "10:00-10:50", "day": "Monday", "group": "ME1-03", "course": "MDP G111, Tut.", "room": "15401-300"},
-{"time": "10:00-10:50", "day": "Monday", "group": "ME1-04", "course": "MDP G111, Tut.", "room": "14301-50"},
-{"time": "11:00-11:50", "day": "Monday", "group": "ME1-01", "course": "EMC G101, Tut.", "room": "19302-48"},
-{"time": "11:00-11:50", "day": "Monday", "group": "ME1-02", "course": "MTH G102, Tut.", "room": "14100-(104)"},
-{"time": "11:00-11:50", "day": "Monday", "group": "ME1-03", "course": "MDP G111, Tut.", "room": "15401-300"},
-{"time": "11:00-11:50", "day": "Monday", "group": "ME1-04", "course": "MDP G111, Tut.", "room": "14301-50"},
-{"time": "12:00-12:50", "day": "Monday", "group": "ME1-01", "course": "EMC G101, Tut.", "room": "19302-48"},
-{"time": "12:00-12:50", "day": "Monday", "group": "ME1-03", "course": "MDP G111, Tut.", "room": "15401-300"},
-{"time": "12:00-12:50", "day": "Monday", "group": "ME1-04", "course": "MDP G111, Tut.", "room": "14301-50"},
-{"time": "1:00-1:50", "day": "Monday", "group": "ME1-01", "course": "EPE G113, Tut.", "room": "19302-48"},
-{"time": "1:00-1:50", "day": "Monday", "group": "ME1-02", "course": "EPE G113, Tut.", "room": "17301-56"},
-{"time": "1:00-1:50", "day": "Monday", "group": "ME1-03", "course": "MTH G102, Tut.", "room": "17302-148"},
-{"time": "2:00-2:50", "day": "Monday", "group": "ME1-01", "course": "EPE G113, Tut.", "room": "19302-48"},
-{"time": "2:00-2:50", "day": "Monday", "group": "ME1-02", "course": "EPE G113, Tut.", "room": "17301-56"},
-{"time": "2:00-2:50", "day": "Monday", "group": "ME1-03", "course": "MTH G102, Tut.", "room": "17302-148"},
-{"time": "3:00-3:50", "day": "Monday", "group": "ME1-01", "course": "EPE G113, Tut.", "room": "19302-48"},
-{"time": "3:00-3:50", "day": "Monday", "group": "ME1-02", "course": "EPE G113, Tut.", "room": "17301-56"},
+function formatTime(start, span) {
+  return `${TIME_STARTS[start]} – ${TIME_ENDS[start + span - 1]}`;
+}
 
-// Tuesday
-{"time": "8:00-8:50", "day": "Tuesday", "group": "ALL", "course": "MTH G102, Lec.", "room": "7104-360"},
-{"time": "9:00-9:50", "day": "Tuesday", "group": "ALL", "course": "MTH G102, Lec.", "room": "7104-360"},
-{"time": "10:00-10:50", "day": "Tuesday", "group": "ALL", "course": "EPE G113, Lec.", "room": "7104-360"},
-{"time": "11:00-11:50", "day": "Tuesday", "group": "ALL", "course": "EPE G113, Lec.", "room": "7104-360"},
-{"time": "12:00-12:50", "day": "Tuesday", "group": "ME1-01", "course": "MDP G121, Tut.", "room": "17200-56"},
-{"time": "12:00-12:50", "day": "Tuesday", "group": "ME1-02", "course": "EMC G101, Tut.", "room": "17102-148"},
-{"time": "12:00-12:50", "day": "Tuesday", "group": "ME1-03", "course": "MDP G121, Tut.", "room": "14302-50"},
-{"time": "1:00-1:50", "day": "Tuesday", "group": "ME1-01", "course": "MDP G121, Tut.", "room": "17200-56"},
-{"time": "1:00-1:50", "day": "Tuesday", "group": "ME1-02", "course": "EMC G101, Tut.", "room": "17102-148"},
-{"time": "1:00-1:50", "day": "Tuesday", "group": "ME1-03", "course": "MDP G121, Tut.", "room": "14302-50"},
-{"time": "2:00-2:50", "day": "Tuesday", "group": "ME1-01", "course": "MDP G121, Tut.", "room": "17200-56"},
-{"time": "2:00-2:50", "day": "Tuesday", "group": "ME1-02", "course": "EMC G101, Tut.", "room": "17102-148"},
-{"time": "2:00-2:50", "day": "Tuesday", "group": "ME1-03", "course": "MDP G121, Tut.", "room": "14302-50"},
+const SESSIONS = [
+  // Sunday
+  { day: "Sunday", start: 0, span: 2, group: "ALL", course: "GEN G119, Lec.", room: "3103-414" },
+  { day: "Sunday", start: 2, span: 3, group: "ME1-01", course: "MDP G111, Tut.", room: "15401-300" },
+  { day: "Sunday", start: 2, span: 3, group: "ME1-02", course: "MDP G111, Tut.", room: "14201-50" },
+  { day: "Sunday", start: 2, span: 3, group: "ME1-03", course: "EPE G113, Tut.", room: "17400-56" },
 
-// Wednesday
-{"time": "8:00-8:50", "day": "Wednesday", "group": "ALL", "course": "MDP G111, Lec.", "room": "7104-360"},
-{"time": "9:00-9:50", "day": "Wednesday", "group": "ALL", "course": "MDP G111, Lec.", "room": "7104-360"},
-{"time": "10:00-10:50", "day": "Wednesday", "group": "ME1-02", "course": "MDP G121, Tut.", "room": "14302-50"},
-{"time": "10:00-10:50", "day": "Wednesday", "group": "ME1-03", "course": "EMC G101, Tut.", "room": "19302-48"},
-{"time": "10:00-10:50", "day": "Wednesday", "group": "ME1-04", "course": "MDP G121, Tut.", "room": "19301-48"},
-{"time": "11:00-11:50", "day": "Wednesday", "group": "ME1-02", "course": "MDP G121, Tut.", "room": "14302-50"},
-{"time": "11:00-11:50", "day": "Wednesday", "group": "ME1-03", "course": "EMC G101, Tut.", "room": "19302-48"},
-{"time": "11:00-11:50", "day": "Wednesday", "group": "ME1-04", "course": "MDP G121, Tut.", "room": "19301-48"},
-{"time": "12:00-12:50", "day": "Wednesday", "group": "ME1-02", "course": "MDP G121, Tut.", "room": "14302-50"},
-{"time": "12:00-12:50", "day": "Wednesday", "group": "ME1-03", "course": "EMC G101, Tut.", "room": "19302-48"},
-{"time": "12:00-12:50", "day": "Wednesday", "group": "ME1-04", "course": "MDP G121, Tut.", "room": "19301-48"},
-{"time": "2:00-2:50", "day": "Wednesday", "group": "ALL", "course": "EMC G101, Lec.", "room": "7104-360"},
-{"time": "3:00-3:50", "day": "Wednesday", "group": "ALL", "course": "EMC G101, Lec.", "room": "7104-360"},
+  // Monday
+  { day: "Monday", start: 0, span: 2, group: "ALL", course: "MDP G121, Lec.", room: "3101-306" },
+  { day: "Monday", start: 2, span: 3, group: "ME1-01", course: "EMC G101, Tut.", room: "19302-48" },
+  { day: "Monday", start: 2, span: 2, group: "ME1-02", course: "MTH G102, Tut.", room: "14100-(104)" },
+  { day: "Monday", start: 2, span: 3, group: "ME1-03", course: "MDP G111, Tut.", room: "15401-300" },
+  { day: "Monday", start: 2, span: 3, group: "ME1-04", course: "MDP G111, Tut.", room: "14301-50" },
+  { day: "Monday", start: 5, span: 3, group: "ME1-01", course: "EPE G113, Tut.", room: "19302-48" },
+  { day: "Monday", start: 5, span: 3, group: "ME1-02", course: "EPE G113, Tut.", room: "17301-56" },
+  { day: "Monday", start: 5, span: 2, group: "ME1-03", course: "MTH G102, Tut.", room: "17302-148" },
 
-// Thursday
-{"time": "8:00-8:50", "day": "Thursday", "group": "ME1-04", "course": "EMC G101, Tut.", "room": "14100-(104)"},
-{"time": "9:00-9:50", "day": "Thursday", "group": "ME1-01", "course": "MTH G102, Tut.", "room": "14301-50"},
-{"time": "9:00-9:50", "day": "Thursday", "group": "ME1-04", "course": "EMC G101, Tut.", "room": "14100-(104)"},
-{"time": "10:00-10:50", "day": "Thursday", "group": "ME1-01", "course": "MTH G102, Tut.", "room": "14301-50"},
-{"time": "10:00-10:50", "day": "Thursday", "group": "ME1-04", "course": "EMC G101, Tut.", "room": "14100-(104)"},
-{"time": "11:00-11:50", "day": "Thursday", "group": "ME1-04", "course": "MTH G102, Tut.", "room": "14301-50"},
-{"time": "12:00-12:50", "day": "Thursday", "group": "ME1-04", "course": "MTH G102, Tut.", "room": "14301-50"},
-{"time": "1:00-1:50", "day": "Thursday", "group": "ME1-04", "course": "EPE G113, Tut.", "room": "14301-50"},
-{"time": "2:00-2:50", "day": "Thursday", "group": "ME1-04", "course": "EPE G113, Tut.", "room": "14301-50"},
-{"time": "3:00-3:50", "day": "Thursday", "group": "ME1-04", "course": "EPE G113, Tut.", "room": "14301-50"},
+  // Tuesday
+  { day: "Tuesday", start: 0, span: 2, group: "ALL", course: "MTH G102, Lec.", room: "7104-360" },
+  { day: "Tuesday", start: 2, span: 2, group: "ALL", course: "EPE G113, Lec.", room: "7104-360" },
+  { day: "Tuesday", start: 4, span: 3, group: "ME1-01", course: "MDP G121, Tut.", room: "17200-56" },
+  { day: "Tuesday", start: 4, span: 3, group: "ME1-02", course: "EMC G101, Tut.", room: "17102-148" },
+  { day: "Tuesday", start: 4, span: 3, group: "ME1-03", course: "MDP G121, Tut.", room: "14302-50" },
+
+  // Wednesday
+  { day: "Wednesday", start: 0, span: 2, group: "ALL", course: "MDP G111, Lec.", room: "7104-360" },
+  { day: "Wednesday", start: 2, span: 3, group: "ME1-02", course: "MDP G121, Tut.", room: "14302-50" },
+  { day: "Wednesday", start: 2, span: 3, group: "ME1-03", course: "EMC G101, Tut.", room: "19302-48" },
+  { day: "Wednesday", start: 2, span: 3, group: "ME1-04", course: "MDP G121, Tut.", room: "19301-48" },
+  { day: "Wednesday", start: 6, span: 2, group: "ALL", course: "EMC G101, Lec.", room: "7104-360" },
+
+  // Thursday
+  { day: "Thursday", start: 0, span: 3, group: "ME1-04", course: "EMC G101, Tut.", room: "14100-(104)" },
+  { day: "Thursday", start: 1, span: 2, group: "ME1-01", course: "MTH G102, Tut.", room: "14301-50" },
+  { day: "Thursday", start: 3, span: 2, group: "ME1-04", course: "MTH G102, Tut.", room: "14301-50" },
+  { day: "Thursday", start: 5, span: 3, group: "ME1-04", course: "EPE G113, Tut.", room: "14301-50" },
 ];
 
 function courseInfo(raw){
@@ -418,38 +404,35 @@ function courseInfo(raw){
   return { code, type, name: meta.name, tag: meta.tag };
 }
 
-function buildIndex(){
-  const idx = {};
-  ENTRIES.forEach(e => {
-    const key = e.day + '|' + e.time;
-    (idx[key] = idx[key] || []).push(e);
-  });
-  return idx;
-}
-const INDEX = buildIndex();
-
 function renderHeader(grid){
   const corner = document.createElement('div');
   corner.className = 'cell head corner';
+  corner.style.gridColumn = '1';
+  corner.style.gridRow = '1';
   grid.appendChild(corner);
-  DAYS.forEach(d => {
+
+  DAYS.forEach((d, i) => {
     const c = document.createElement('div');
-    c.className = 'cell head';
+    c.className = 'cell head' + (i === DAYS.length - 1 ? ' edge-right' : '');
+    c.style.gridColumn = `${i + 2}`;
+    c.style.gridRow = '1';
     c.innerHTML = `<div class="head-day">${d}<small>Wk. Session</small></div>`;
     grid.appendChild(c);
   });
-  grid.style.gridTemplateRows = `52px repeat(${SLOTS.length}, minmax(64px,auto))`;
 }
 
-function cardHTML(e, extraLabel){
-  const info = courseInfo(e.course);
-  const shared = e.group === 'ALL' ? 'shared' : '';
+function cardHTML(sess, extraLabel){
+  const info = courseInfo(sess.course);
+  const shared = sess.group === 'ALL' ? 'shared' : '';
   const tagline = extraLabel ? `${extraLabel} · ${info.name}` : info.name;
+  const timeStr = formatTime(sess.start, sess.span);
+
   return `
     <div class="slot-card ${shared}" style="--c: var(--c-${info.tag})">
       <div class="code">${info.code}<span class="type">${info.type}</span></div>
       <div class="title">${tagline}</div>
-      <div class="room">${e.room}</div>
+      <div class="time-range">${timeStr}</div>
+      <div class="room">${sess.room}</div>
     </div>`;
 }
 
@@ -458,23 +441,58 @@ function renderGrid(group){
   grid.innerHTML = '';
   renderHeader(grid);
 
-  SLOTS.forEach(slot => {
+  // Time column (col 1)
+  SLOTS.forEach((slot, s) => {
     const timeCell = document.createElement('div');
     timeCell.className = 'cell time-col';
+    timeCell.style.gridColumn = '1';
+    timeCell.style.gridRow = `${s + 2}`;
     timeCell.textContent = slot;
     grid.appendChild(timeCell);
+  });
 
-    DAYS.forEach(day => {
+  // Day columns (cols 2..6)
+  DAYS.forEach((day, d) => {
+    const col = d + 2;
+    const isLastCol = (d === DAYS.length - 1);
+
+    const daySessions = SESSIONS.filter(s => s.day === day && (s.group === 'ALL' || s.group === group))
+                                .sort((a, b) => a.start - b.start);
+
+    let currentSlot = 0;
+    daySessions.forEach(sess => {
+      // Free slot before session
+      if (sess.start > currentSlot) {
+        const freeSpan = sess.start - currentSlot;
+        const freeCell = document.createElement('div');
+        freeCell.className = 'cell' + (isLastCol ? ' edge-right' : '');
+        freeCell.style.gridColumn = `${col}`;
+        freeCell.style.gridRow = `${currentSlot + 2} / span ${freeSpan}`;
+        freeCell.innerHTML = '<div class="free">Free</div>';
+        grid.appendChild(freeCell);
+      }
+
+      // Single contiguous session card spanning its whole duration
       const cell = document.createElement('div');
-      cell.className = 'cell';
-      const all = INDEX[day + '|' + slot] || [];
-      const applicable = all.filter(e => e.group === 'ALL' || e.group === group);
-
-      cell.innerHTML = applicable.length === 0
-        ? '<div class="free">Free</div>'
-        : applicable.map(e => cardHTML(e)).join('');
+      cell.className = 'cell' + (isLastCol ? ' edge-right' : '');
+      cell.style.gridColumn = `${col}`;
+      cell.style.gridRow = `${sess.start + 2} / span ${sess.span}`;
+      cell.innerHTML = cardHTML(sess);
       grid.appendChild(cell);
+
+      currentSlot = sess.start + sess.span;
     });
+
+    // Free slot after last session until end of day
+    if (currentSlot < 8) {
+      const freeSpan = 8 - currentSlot;
+      const freeCell = document.createElement('div');
+      freeCell.className = 'cell' + (isLastCol ? ' edge-right' : '');
+      freeCell.style.gridColumn = `${col}`;
+      freeCell.style.gridRow = `${currentSlot + 2} / span ${freeSpan}`;
+      freeCell.innerHTML = '<div class="free">Free</div>';
+      grid.appendChild(freeCell);
+    }
   });
 }
 
@@ -483,22 +501,51 @@ function renderAllGroupsGrid(){
   grid.innerHTML = '';
   renderHeader(grid);
 
-  SLOTS.forEach(slot => {
+  SLOTS.forEach((slot, s) => {
     const timeCell = document.createElement('div');
     timeCell.className = 'cell time-col';
+    timeCell.style.gridColumn = '1';
+    timeCell.style.gridRow = `${s + 2}`;
     timeCell.textContent = slot;
     grid.appendChild(timeCell);
+  });
 
-    DAYS.forEach(day => {
+  DAYS.forEach((day, d) => {
+    const col = d + 2;
+    const isLastCol = (d === DAYS.length - 1);
+
+    let s = 0;
+    while (s < 8) {
+      // If there's a shared lecture spanning multiple hours, merge it as a single block
+      const sharedSess = SESSIONS.find(sess => sess.day === day && sess.group === 'ALL' && sess.start === s);
+      if (sharedSess) {
+        const cell = document.createElement('div');
+        cell.className = 'cell' + (isLastCol ? ' edge-right' : '');
+        cell.style.gridColumn = `${col}`;
+        cell.style.gridRow = `${s + 2} / span ${sharedSess.span}`;
+        cell.innerHTML = cardHTML(sharedSess);
+        grid.appendChild(cell);
+        s += sharedSess.span;
+        continue;
+      }
+
+      // Check for section tutorials active during this slot
+      const slotSess = SESSIONS.filter(sess => sess.day === day && sess.group !== 'ALL' && s >= sess.start && s < (sess.start + sess.span))
+                               .sort((a, b) => a.group.localeCompare(b.group));
+
       const cell = document.createElement('div');
-      cell.className = 'cell';
-      const all = (INDEX[day + '|' + slot] || []).slice().sort((a,b)=> a.group.localeCompare(b.group));
+      cell.className = 'cell' + (isLastCol ? ' edge-right' : '');
+      cell.style.gridColumn = `${col}`;
+      cell.style.gridRow = `${s + 2}`;
 
-      cell.innerHTML = all.length === 0
-        ? '<div class="free">Free</div>'
-        : all.map(e => cardHTML(e, e.group === 'ALL' ? null : e.group)).join('<div style="height:5px"></div>');
+      if (slotSess.length === 0) {
+        cell.innerHTML = '<div class="free">Free</div>';
+      } else {
+        cell.innerHTML = slotSess.map(sess => cardHTML(sess, sess.group)).join('<div style="height:5px"></div>');
+      }
       grid.appendChild(cell);
-    });
+      s++;
+    }
   });
 }
 
