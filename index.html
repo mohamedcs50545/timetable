@@ -4,6 +4,16 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Cairo University · Faculty of Engineering — Mechanical Engineering</title>
+
+<!-- PWA Manifest & Icons -->
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#2563eb">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="ME-1 Schedule">
+<link rel="apple-touch-icon" href="icon.svg">
+<link rel="icon" type="image/svg+xml" href="icon.svg">
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
@@ -63,7 +73,7 @@ body {
   max-width: 1240px;
 }
 
-/* Institutional Masthead */
+/* Masthead */
 .masthead {
   border-bottom: 2px solid var(--border);
   padding-bottom: 18px;
@@ -141,6 +151,7 @@ body {
   font-weight: 600;
   cursor: pointer;
   transition: all 0.15s ease;
+  position: relative;
 }
 .action-btn.icon-only {
   width: 36px;
@@ -156,7 +167,154 @@ body {
   color: #2563eb;
   border-color: #2563eb;
 }
+.action-btn.install-btn {
+  background: #2563eb;
+  color: #fff;
+  border-color: #2563eb;
+  display: none;
+}
+.action-btn.install-btn:hover {
+  background: #1d4ed8;
+}
 .action-btn svg { width: 15px; height: 15px; fill: currentColor; }
+
+/* Glowing Notification Bell Badge */
+.notif-badge-dot {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  width: 9px;
+  height: 9px;
+  background: #ef4444;
+  border: 2px solid var(--surface);
+  border-radius: 50%;
+  display: none;
+}
+.notif-badge-dot.active {
+  display: block;
+  animation: notif-pulse 1.8s infinite;
+}
+@keyframes notif-pulse {
+  0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); }
+  70% { box-shadow: 0 0 0 6px rgba(239, 68, 68, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+}
+
+/* Modal Overlay for Announcements */
+.notif-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.65);
+  backdrop-filter: blur(4px);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+}
+.notif-modal-overlay.open {
+  opacity: 1;
+  pointer-events: auto;
+}
+.notif-modal-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  width: 100%;
+  max-width: 460px;
+  max-height: 80vh;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.25);
+  overflow: hidden;
+  transform: scale(0.95);
+  transition: transform 0.2s ease;
+}
+.notif-modal-overlay.open .notif-modal-card {
+  transform: scale(1);
+}
+.notif-modal-head {
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.notif-modal-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-main);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.notif-modal-close {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  font-size: 20px;
+  line-height: 1;
+  padding: 4px 6px;
+  border-radius: 6px;
+  transition: all 0.15s ease;
+}
+.notif-modal-close:hover {
+  background: var(--surface-alt);
+  color: var(--text-main);
+}
+.notif-modal-body {
+  padding: 14px 18px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.notif-item {
+  background: var(--surface-alt);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 12px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.notif-top-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.notif-tag {
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 6px;
+  border-radius: 4px;
+  background: rgba(37, 99, 235, 0.12);
+  color: #2563eb;
+  letter-spacing: 0.02em;
+}
+.notif-tag.urgent {
+  background: rgba(239, 68, 68, 0.12);
+  color: #ef4444;
+}
+.notif-date {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10.5px;
+  color: var(--text-muted);
+}
+.notif-item-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-main);
+}
+.notif-item-body {
+  font-size: 12px;
+  color: var(--text-muted);
+  line-height: 1.45;
+}
 
 /* Live Status Strip */
 .live-status {
@@ -307,7 +465,7 @@ body {
   color: var(--text-muted);
 }
 
-/* Day Selector for Agenda View */
+/* Day Selector */
 .days-bar {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
@@ -640,9 +798,7 @@ body {
   color: var(--text-muted);
 }
 
-.day-print-header {
-  display: none;
-}
+.day-print-header { display: none; }
 
 /* Legend */
 .legend {
@@ -695,9 +851,7 @@ body {
   font-family: 'JetBrains Mono', monospace;
 }
 
-/* ========================================================
-   UNIVERSAL PRINT ENGINE (A4 PORTRAIT FOR DAY, LANDSCAPE FOR WEEK)
-   ======================================================== */
+/* Universal Print Engine */
 @media print {
   html, body {
     background: #ffffff !important;
@@ -708,7 +862,7 @@ body {
     print-color-adjust: exact !important;
   }
 
-  .top-actions, .control-bar, .view-tabs, .days-bar, .panel-assessments, .live-status, .legend-hint, #deviceModeBtn, #calendarBtn, #printBtn, #themeBtn {
+  .top-actions, .control-bar, .view-tabs, .days-bar, .panel-assessments, .live-status, .legend-hint, #deviceModeBtn, #calendarBtn, #printBtn, #themeBtn, #notifBtn {
     display: none !important;
   }
 
@@ -732,7 +886,6 @@ body {
     color: #334155 !important;
   }
 
-  /* --- DAY VIEW PRINT RULES --- */
   body.print-day-mode .matrix-wrapper,
   body.print-day-mode .legend {
     display: none !important;
@@ -772,7 +925,6 @@ body {
     color: #475569 !important;
   }
 
-  /* --- WEEK VIEW PRINT RULES --- */
   body.print-week-mode .timeline-wrap,
   body.print-week-mode .day-print-header {
     display: none !important;
@@ -897,6 +1049,16 @@ body {
 
     <!-- Actions Bar -->
     <div class="top-actions">
+      <!-- Notification Bell with Glow Indicator -->
+      <button class="action-btn icon-only" id="notifBtn" title="Announcements & Alerts">
+        <span class="notif-badge-dot" id="notifBadge"></span>
+        <svg viewBox="0 0 24 24"><path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2zm6-6v-5c0-3.07-1.63-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.64 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2zm-2 1H8v-6c0-2.48 1.51-4.5 4-4.5s4 2.02 4 4.5v6z"/></svg>
+      </button>
+
+      <button class="action-btn install-btn" id="pwaInstallBtn" title="Install App on Device">
+        <span>📲 Install App</span>
+      </button>
+
       <button class="action-btn" id="deviceModeBtn" title="Switch layout width (Mobile / PC)">
         <span id="deviceModeIcon">💻</span>
         <span id="deviceModeText">PC View</span>
@@ -971,8 +1133,21 @@ body {
 
 </div>
 
+<!-- Announcements Modal Dialog -->
+<div class="notif-modal-overlay" id="notifModal">
+  <div class="notif-modal-card">
+    <div class="notif-modal-head">
+      <div class="notif-modal-title">
+        <svg style="width:16px;height:16px;fill:#2563eb" viewBox="0 0 24 24"><path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2zm6-6v-5c0-3.07-1.63-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.64 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2zm-2 1H8v-6c0-2.48 1.51-4.5 4-4.5s4 2.02 4 4.5v6z"/></svg>
+        Announcements & Alerts
+      </div>
+      <button class="notif-modal-close" id="closeNotifModal" title="Close">&times;</button>
+    </div>
+    <div class="notif-modal-body" id="notifList"></div>
+  </div>
+</div>
+
 <script>
-// Official Semester Start Date: September 19, 2026
 const ACADEMIC_YEAR_START = new Date(2026, 8, 19);
 
 // Campus Building Directory
@@ -1002,6 +1177,19 @@ const COURSES = {
   "MDP G121": { name: "Materials Science", color: "var(--c-mdp2)" },
   "EPE G113": { name: "Electrical & Electronics Engineering", color: "var(--c-epe)" },
 };
+
+// Announcements List (Sorted Newest First)
+// Any new ID will automatically cause the bell to glow/pulse until opened
+const NOTIFICATIONS = [
+  {
+    id: "ann-01",
+    date: "8 Sep 2026",
+    tag: "Welcome",
+    isUrgent: false,
+    title: "Welcome to Mechanical Engineering (Batch 30)",
+    body: "Fall Semester timetable is now active. Official lectures and tutorials commence on Saturday, 19 September 2026."
+  }
+];
 
 const ASSESSMENTS = [];
 
@@ -1083,7 +1271,57 @@ function parseMinutes(t) {
   return h * 60 + m;
 }
 
-// Academic Week & Date Indicator
+// Announcements & Bell Engine
+function initNotifications() {
+  const badge = document.getElementById("notifBadge");
+  const readIds = JSON.parse(localStorage.getItem("cufe_read_notifs") || "[]");
+
+  // Check if any notification is unread
+  const hasUnread = NOTIFICATIONS.some(n => !readIds.includes(n.id));
+  if (hasUnread) {
+    badge.classList.add("active");
+  } else {
+    badge.classList.remove("active");
+  }
+
+  // Render modal list
+  const list = document.getElementById("notifList");
+  if (NOTIFICATIONS.length === 0) {
+    list.innerHTML = `<div style="text-align:center;color:var(--text-muted);font-size:12.5px;padding:24px 0">No notifications posted.</div>`;
+    return;
+  }
+
+  list.innerHTML = NOTIFICATIONS.map(n => `
+    <div class="notif-item">
+      <div class="notif-top-row">
+        <span class="notif-tag ${n.isUrgent ? 'urgent' : ''}">${n.tag}</span>
+        <span class="notif-date">${n.date}</span>
+      </div>
+      <div class="notif-item-title">${n.title}</div>
+      <div class="notif-item-body">${n.body}</div>
+    </div>
+  `).join("");
+}
+
+function openNotifModal() {
+  document.getElementById("notifModal").classList.add("open");
+  
+  // Mark all current announcements as read
+  const allIds = NOTIFICATIONS.map(n => n.id);
+  localStorage.setItem("cufe_read_notifs", JSON.stringify(allIds));
+  document.getElementById("notifBadge").classList.remove("active");
+}
+
+function closeNotifModal() {
+  document.getElementById("notifModal").classList.remove("open");
+}
+
+document.getElementById("notifBtn").addEventListener("click", openNotifModal);
+document.getElementById("closeNotifModal").addEventListener("click", closeNotifModal);
+document.getElementById("notifModal").addEventListener("click", (e) => {
+  if (e.target.id === "notifModal") closeNotifModal();
+});
+
 function updateAcademicCalendarInfo() {
   const now = new Date();
   const options = { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' };
@@ -1105,7 +1343,6 @@ function updateAcademicCalendarInfo() {
   }
 }
 
-// Live Status Engine
 function updateLiveTracker() {
   const now = new Date();
   document.getElementById("liveClock").textContent = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
@@ -1174,13 +1411,11 @@ function updateLiveTracker() {
   }
 }
 
-// Room Guide
 function showRoomDetails(roomCode) {
   const info = ROOM_INFO[roomCode] || "Faculty of Engineering · Giza Campus";
   alert(`📍 Hall / Lab Location Details:\n\nRoom Code: ${roomCode}\n${info}`);
 }
 
-// iCalendar Export (.ics)
 function exportToCalendar() {
   const activeSessions = SESSIONS.filter(s => s.group === "ALL" || s.group === activeGroup);
   
@@ -1230,7 +1465,6 @@ function exportToCalendar() {
   URL.revokeObjectURL(url);
 }
 
-// Full Week Grid Matrix
 function renderWeekMatrix() {
   const container = document.getElementById("viewContainer");
   container.innerHTML = `
@@ -1330,7 +1564,6 @@ function renderWeekMatrix() {
   });
 }
 
-// Daily Agenda
 function renderDailyAgenda() {
   const container = document.getElementById("viewContainer");
   const daySessions = SESSIONS.filter(s => s.day === activeDay && (s.group === "ALL" || s.group === activeGroup))
@@ -1338,6 +1571,9 @@ function renderDailyAgenda() {
 
   if (daySessions.length === 0) {
     container.innerHTML = `
+      <div class="day-print-header">
+        Daily Schedule: ${activeDay} — (${activeGroup})
+      </div>
       <div class="empty-state">
         <h3>No classes scheduled for ${activeDay}</h3>
         <p style="font-size:13px;margin-top:4px">You have a free day off!</p>
@@ -1347,7 +1583,7 @@ function renderDailyAgenda() {
 
   let html = `
     <div class="day-print-header">
-      Schedule for ${activeDay} — (${activeGroup})
+      Daily Schedule: ${activeDay} — (${activeGroup})
     </div>
     <div class="timeline-wrap">
   `;
@@ -1422,7 +1658,6 @@ function renderDaysBar() {
   }).join("");
 }
 
-// Legend
 function renderLegend() {
   const legend = document.getElementById("legend");
   legend.innerHTML = `
@@ -1475,7 +1710,6 @@ document.getElementById("sectionSelect").addEventListener("change", (e) => {
   render();
 });
 
-// Device Mode Management
 function initDeviceMode() {
   const saved = localStorage.getItem("cufe_device_mode") || "mobile";
   setDeviceMode(saved);
@@ -1507,7 +1741,6 @@ document.getElementById("deviceModeBtn").addEventListener("click", () => {
   setDeviceMode(isPc ? "mobile" : "pc");
 });
 
-// Theme Management
 function initTheme() {
   const saved = localStorage.getItem("cufe_theme") || "light";
   document.documentElement.setAttribute("data-theme", saved);
@@ -1531,23 +1764,23 @@ document.getElementById("themeBtn").addEventListener("click", () => {
   updateThemeIcon(next);
 });
 
-// Context-Aware Print Handler
+// Dynamic Context Print Handler
 document.getElementById("printBtn").addEventListener("click", () => {
   document.body.classList.remove("print-day-mode", "print-week-mode");
-  
-  let dynamicStyle = document.getElementById("dynamicPrintPageStyle");
-  if (!dynamicStyle) {
-    dynamicStyle = document.createElement("style");
-    dynamicStyle.id = "dynamicPrintPageStyle";
-    document.head.appendChild(dynamicStyle);
+
+  let printStyle = document.getElementById("dynamicPrintPageRule");
+  if (!printStyle) {
+    printStyle = document.createElement("style");
+    printStyle.id = "dynamicPrintPageRule";
+    document.head.appendChild(printStyle);
   }
 
   if (activeView === "day") {
     document.body.classList.add("print-day-mode");
-    dynamicStyle.innerHTML = "@page { size: A4 portrait !important; margin: 10mm !important; }";
+    printStyle.innerHTML = "@page { size: A4 portrait !important; margin: 12mm !important; }";
   } else {
     document.body.classList.add("print-week-mode");
-    dynamicStyle.innerHTML = "@page { size: A4 landscape !important; margin: 8mm !important; }";
+    printStyle.innerHTML = "@page { size: A4 landscape !important; margin: 8mm !important; }";
   }
 
   window.print();
@@ -1555,9 +1788,43 @@ document.getElementById("printBtn").addEventListener("click", () => {
 
 document.getElementById("calendarBtn").addEventListener("click", exportToCalendar);
 
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('./sw.js').catch((err) => {
+      console.log('Service Worker registration failed:', err);
+    });
+  });
+}
+
+let deferredPrompt;
+const installBtn = document.getElementById('pwaInstallBtn');
+
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault();
+  deferredPrompt = e;
+  installBtn.style.display = 'inline-flex';
+});
+
+installBtn.addEventListener('click', async () => {
+  if (deferredPrompt) {
+    deferredPrompt.prompt();
+    const { outcome } = await deferredPrompt.userChoice;
+    if (outcome === 'accepted') {
+      installBtn.style.display = 'none';
+    }
+    deferredPrompt = null;
+  }
+});
+
+window.addEventListener('appinstalled', () => {
+  installBtn.style.display = 'none';
+  deferredPrompt = null;
+});
+
 // Initial Setup
 initDeviceMode();
 initTheme();
+initNotifications();
 renderLegend();
 render();
 setInterval(updateLiveTracker, 60000);
